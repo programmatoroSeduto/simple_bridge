@@ -1,2 +1,0 @@
-my_custom_listener:ros1_bridge_support_pkg
--DCATKIN_DEVEL_PREFIX=/root/simple_bridge/ws_ros1/devel -DCMAKE_INSTALL_PREFIX=/root/simple_bridge/ws_ros1/install -G Unix Makefiles
