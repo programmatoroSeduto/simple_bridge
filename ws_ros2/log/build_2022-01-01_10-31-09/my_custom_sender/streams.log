@@ -1,0 +1,77 @@
+[0.014s] Invoking command in '/root/simple_bridge/ws_ros2/build/my_custom_sender': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake /root/simple_bridge/ws_ros2/src/my_custom_sender -DCMAKE_INSTALL_PREFIX=/root/simple_bridge/ws_ros2/install/my_custom_sender
+[0.062s] -- The C compiler identification is GNU 9.3.0
+[0.104s] -- The CXX compiler identification is GNU 9.3.0
+[0.108s] -- Check for working C compiler: /usr/bin/cc
+[0.165s] -- Check for working C compiler: /usr/bin/cc -- works
+[0.165s] -- Detecting C compiler ABI info
+[0.220s] -- Detecting C compiler ABI info - done
+[0.230s] -- Detecting C compile features
+[0.230s] -- Detecting C compile features - done
+[0.232s] -- Check for working CXX compiler: /usr/bin/c++
+[0.293s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[0.293s] -- Detecting CXX compiler ABI info
+[0.352s] -- Detecting CXX compiler ABI info - done
+[0.361s] -- Detecting CXX compile features
+[0.362s] -- Detecting CXX compile features - done
+[0.364s] -- Found ament_cmake: 0.9.9 (/opt/ros/foxy/share/ament_cmake/cmake)
+[0.388s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+[0.388s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[0.590s] -- Found rclcpp: 2.4.0 (/opt/ros/foxy/share/rclcpp/cmake)
+[0.636s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.644s] -- Found rosidl_adapter: 1.2.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[0.712s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[0.743s] -- Found FastRTPS: /opt/ros/foxy/include  
+[0.828s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.884s] -- Found rmw_implementation_cmake: 1.0.3 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[0.885s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.886s] -- Looking for pthread.h
+[0.942s] -- Looking for pthread.h - found
+[0.942s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[0.996s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[0.996s] -- Looking for pthread_create in pthreads
+[1.039s] -- Looking for pthread_create in pthreads - not found
+[1.040s] -- Looking for pthread_create in pthread
+[1.090s] -- Looking for pthread_create in pthread - found
+[1.091s] -- Found Threads: TRUE  
+[1.234s] -- Found ros2_bridge_support_pkg: 0.0.0 (/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake)
+[1.262s] -- Found ament_lint_auto: 0.9.6 (/opt/ros/foxy/share/ament_lint_auto/cmake)
+[1.339s] -- Added test 'copyright' to check source files copyright and LICENSE
+[1.339s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[1.340s] -- Configured cppcheck include dirs: 
+[1.340s] -- Configured cppcheck exclude dirs and/or files: 
+[1.340s] -- Added test 'cpplint' to check C / C++ code against the Google style
+[1.340s] -- Configured cpplint exclude dirs and/or files: 
+[1.341s] -- Added test 'lint_cmake' to check CMake code style
+[1.342s] -- Added test 'uncrustify' to check C / C++ code style
+[1.342s] -- Configured uncrustify additional arguments: 
+[1.342s] -- Added test 'xmllint' to check XML markup files
+[1.344s] -- Configuring done
+[1.351s] -- Generating done
+[1.352s] -- Build files have been written to: /root/simple_bridge/ws_ros2/build/my_custom_sender
+[1.359s] Invoked command in '/root/simple_bridge/ws_ros2/build/my_custom_sender' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake /root/simple_bridge/ws_ros2/src/my_custom_sender -DCMAKE_INSTALL_PREFIX=/root/simple_bridge/ws_ros2/install/my_custom_sender
+[1.360s] Invoking command in '/root/simple_bridge/ws_ros2/build/my_custom_sender': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake --build /root/simple_bridge/ws_ros2/build/my_custom_sender -- -j12 -l12
+[1.390s] [35m[1mScanning dependencies of target ros2_sender[0m
+[1.419s] [ 50%] [32mBuilding CXX object CMakeFiles/ros2_sender.dir/src/ros2_sender.cpp.o[0m
+[3.795s] [100%] [32m[1mLinking CXX executable ros2_sender[0m
+[3.911s] [100%] Built target ros2_sender
+[3.919s] Invoked command in '/root/simple_bridge/ws_ros2/build/my_custom_sender' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake --build /root/simple_bridge/ws_ros2/build/my_custom_sender -- -j12 -l12
+[3.947s] Invoking command in '/root/simple_bridge/ws_ros2/build/my_custom_sender': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake --install /root/simple_bridge/ws_ros2/build/my_custom_sender
+[3.953s] -- Install configuration: ""
+[3.953s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/lib/my_custom_sender/ros2_sender
+[3.953s] -- Set runtime path of "/root/simple_bridge/ws_ros2/install/my_custom_sender/lib/my_custom_sender/ros2_sender" to ""
+[3.954s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/ament_index/resource_index/package_run_dependencies/my_custom_sender
+[3.954s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/ament_index/resource_index/parent_prefix_path/my_custom_sender
+[3.954s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/environment/ament_prefix_path.sh
+[3.955s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/environment/ament_prefix_path.dsv
+[3.955s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/environment/path.sh
+[3.955s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/environment/path.dsv
+[3.955s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/local_setup.bash
+[3.955s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/local_setup.sh
+[3.955s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/local_setup.zsh
+[3.955s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/local_setup.dsv
+[3.955s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/package.dsv
+[3.955s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/ament_index/resource_index/packages/my_custom_sender
+[3.956s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/cmake/my_custom_senderConfig.cmake
+[3.956s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/cmake/my_custom_senderConfig-version.cmake
+[3.956s] -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/package.xml
+[3.958s] Invoked command in '/root/simple_bridge/ws_ros2/build/my_custom_sender' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake --install /root/simple_bridge/ws_ros2/build/my_custom_sender

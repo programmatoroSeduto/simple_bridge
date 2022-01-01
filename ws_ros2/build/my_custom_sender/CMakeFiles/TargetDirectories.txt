@@ -1,0 +1,10 @@
+/root/simple_bridge/ws_ros2/build/my_custom_sender/CMakeFiles/install/strip.dir
+/root/simple_bridge/ws_ros2/build/my_custom_sender/CMakeFiles/install/local.dir
+/root/simple_bridge/ws_ros2/build/my_custom_sender/CMakeFiles/edit_cache.dir
+/root/simple_bridge/ws_ros2/build/my_custom_sender/CMakeFiles/test.dir
+/root/simple_bridge/ws_ros2/build/my_custom_sender/CMakeFiles/ros2_sender.dir
+/root/simple_bridge/ws_ros2/build/my_custom_sender/CMakeFiles/install.dir
+/root/simple_bridge/ws_ros2/build/my_custom_sender/CMakeFiles/list_install_components.dir
+/root/simple_bridge/ws_ros2/build/my_custom_sender/CMakeFiles/rebuild_cache.dir
+/root/simple_bridge/ws_ros2/build/my_custom_sender/CMakeFiles/my_custom_sender_uninstall.dir
+/root/simple_bridge/ws_ros2/build/my_custom_sender/CMakeFiles/uninstall.dir

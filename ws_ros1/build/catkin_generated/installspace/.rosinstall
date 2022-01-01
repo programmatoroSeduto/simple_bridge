@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /root/simple_bridge/ws_ros1/install/setup.sh

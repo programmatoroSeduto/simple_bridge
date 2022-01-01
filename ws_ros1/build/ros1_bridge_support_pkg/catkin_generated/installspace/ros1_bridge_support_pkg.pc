@@ -1,0 +1,8 @@
+prefix=/root/simple_bridge/ws_ros1/install
+
+Name: ros1_bridge_support_pkg
+Description: Description of ros1_bridge_support_pkg
+Version: 0.0.0
+Cflags: -I${prefix}/include
+Libs: -L${prefix}/lib 
+Requires: 

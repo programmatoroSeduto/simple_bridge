@@ -1,0 +1,6 @@
+{
+  "package_name": "ros2_bridge_support_pkg",
+  "non_idl_tuples": [
+    "/root/simple_bridge/ws_ros2/src/ros2_bridge_support_pkg:msg/MyCustomMessage.msg"
+  ]
+}

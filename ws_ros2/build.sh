@@ -4,8 +4,13 @@ source /opt/ros/foxy/setup.sh
 rm -rf log
 rm -rf install
 rm -rf build
-# rm build_log.log
 
 set -e 
 
-colcon build
+# BUILD ros2_bridge_support_pkg
+colcon build --packages-select ros2_bridge_support_pkg
+source /root/simple_bridge/ws_ros2/install/setup.sh
+clear
+
+# BUILD my_custom_sender
+colcon build --packages-select my_custom_sender

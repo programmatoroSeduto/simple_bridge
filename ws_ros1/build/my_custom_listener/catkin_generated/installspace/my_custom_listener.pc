@@ -1,0 +1,8 @@
+prefix=/root/simple_bridge/ws_ros1/install
+
+Name: my_custom_listener
+Description: Description of my_custom_listener
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
