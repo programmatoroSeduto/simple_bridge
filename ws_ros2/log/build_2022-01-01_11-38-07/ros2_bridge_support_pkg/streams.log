@@ -1,0 +1,238 @@
+[0.011s] Invoking command in '/root/simple_bridge/ws_ros2/build/ros2_bridge_support_pkg': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake /root/simple_bridge/ws_ros2/src/ros2_bridge_support_pkg -DCMAKE_INSTALL_PREFIX=/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg
+[0.051s] -- The C compiler identification is GNU 9.3.0
+[0.094s] -- The CXX compiler identification is GNU 9.3.0
+[0.097s] -- Check for working C compiler: /usr/bin/cc
+[0.153s] -- Check for working C compiler: /usr/bin/cc -- works
+[0.153s] -- Detecting C compiler ABI info
+[0.208s] -- Detecting C compiler ABI info - done
+[0.218s] -- Detecting C compile features
+[0.218s] -- Detecting C compile features - done
+[0.220s] -- Check for working CXX compiler: /usr/bin/c++
+[0.279s] -- Check for working CXX compiler: /usr/bin/c++ -- works
+[0.280s] -- Detecting CXX compiler ABI info
+[0.341s] -- Detecting CXX compiler ABI info - done
+[0.352s] -- Detecting CXX compile features
+[0.353s] -- Detecting CXX compile features - done
+[0.356s] -- Found ament_cmake: 0.9.9 (/opt/ros/foxy/share/ament_cmake/cmake)
+[0.380s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3") 
+[0.380s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[0.585s] -- Found rclcpp: 2.4.0 (/opt/ros/foxy/share/rclcpp/cmake)
+[0.633s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.640s] -- Found rosidl_adapter: 1.2.1 (/opt/ros/foxy/share/rosidl_adapter/cmake)
+[0.715s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[0.770s] -- Found FastRTPS: /opt/ros/foxy/include  
+[0.874s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.929s] -- Found rmw_implementation_cmake: 1.0.3 (/opt/ros/foxy/share/rmw_implementation_cmake/cmake)
+[0.930s] -- Using RMW implementation 'rmw_fastrtps_cpp' as default
+[0.931s] -- Looking for pthread.h
+[0.988s] -- Looking for pthread.h - found
+[0.988s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+[1.042s] -- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Failed
+[1.042s] -- Looking for pthread_create in pthreads
+[1.086s] -- Looking for pthread_create in pthreads - not found
+[1.087s] -- Looking for pthread_create in pthread
+[1.139s] -- Looking for pthread_create in pthread - found
+[1.140s] -- Found Threads: TRUE  
+[1.277s] -- Found rosidl_default_generators: 1.0.1 (/opt/ros/foxy/share/rosidl_default_generators/cmake)
+[1.307s] -- Found PythonInterp: /usr/bin/python3 (found version "3.8.10") 
+[1.435s] -- Found ament_cmake_ros: 0.9.2 (/opt/ros/foxy/share/ament_cmake_ros/cmake)
+[1.607s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.656s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.680s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.8.10", minimum required is "3.5") 
+[1.683s] -- Found python_cmake_module: 0.8.1 (/opt/ros/foxy/share/python_cmake_module/cmake)
+[1.706s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.8.so (found suitable version "3.8.10", minimum required is "3.5") 
+[1.706s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[1.706s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.8
+[1.706s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.8.so
+[1.724s] -- Found PythonExtra: .so  
+[1.782s] -- Found ament_lint_auto: 0.9.6 (/opt/ros/foxy/share/ament_lint_auto/cmake)
+[1.809s] -- Added test 'copyright' to check source files copyright and LICENSE
+[1.810s] -- Added test 'cppcheck' to perform static code analysis on C / C++ code
+[1.811s] -- Configured cppcheck include dirs: 
+[1.811s] -- Configured cppcheck exclude dirs and/or files: 
+[1.812s] -- Added test 'cpplint' to check C / C++ code against the Google style
+[1.812s] -- Configured cpplint exclude dirs and/or files: 
+[1.812s] -- Added test 'lint_cmake' to check CMake code style
+[1.813s] -- Added test 'uncrustify' to check C / C++ code style
+[1.813s] -- Configured uncrustify additional arguments: 
+[1.814s] -- Added test 'xmllint' to check XML markup files
+[1.818s] -- Configuring done
+[1.860s] -- Generating done
+[1.863s] -- Build files have been written to: /root/simple_bridge/ws_ros2/build/ros2_bridge_support_pkg
+[1.871s] Invoked command in '/root/simple_bridge/ws_ros2/build/ros2_bridge_support_pkg' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake /root/simple_bridge/ws_ros2/src/ros2_bridge_support_pkg -DCMAKE_INSTALL_PREFIX=/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg
+[1.874s] Invoking command in '/root/simple_bridge/ws_ros2/build/ros2_bridge_support_pkg': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake --build /root/simple_bridge/ws_ros2/build/ros2_bridge_support_pkg -- -j12 -l12
+[1.907s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg__cpp[0m
+[1.908s] [  3%] [34m[1mGenerating C code for ROS interfaces[0m
+[1.917s] [  6%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[2.144s] [  6%] Built target ros2_bridge_support_pkg__cpp
+[2.152s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_generator_c[0m
+[2.153s] [ 12%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[2.153s] [ 12%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[2.154s] [ 15%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[2.164s] [ 18%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__rosidl_generator_c.dir/rosidl_generator_c/ros2_bridge_support_pkg/msg/detail/my_custom_message__functions.c.o[0m
+[2.198s] [ 21%] [32m[1mLinking C shared library libros2_bridge_support_pkg__rosidl_generator_c.so[0m
+[2.230s] [ 21%] Built target ros2_bridge_support_pkg__rosidl_generator_c
+[2.239s] [ 27%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[2.239s] [ 27%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[2.407s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_cpp[0m
+[2.417s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_introspection_cpp[0m
+[2.417s] [ 30%] [32mBuilding CXX object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/ros2_bridge_support_pkg/msg/my_custom_message__type_support.cpp.o[0m
+[2.429s] [ 33%] [32mBuilding CXX object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/ros2_bridge_support_pkg/msg/detail/my_custom_message__type_support.cpp.o[0m
+[2.445s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_cpp[0m
+[2.458s] [ 36%] [32mBuilding CXX object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/ros2_bridge_support_pkg/msg/detail/dds_fastrtps/my_custom_message__type_support.cpp.o[0m
+[2.469s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_c[0m
+[2.482s] [ 39%] [32mBuilding CXX object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_c.dir/rosidl_typesupport_c/ros2_bridge_support_pkg/msg/my_custom_message__type_support.cpp.o[0m
+[2.508s] [ 42%] [32m[1mLinking CXX shared library libros2_bridge_support_pkg__rosidl_typesupport_c.so[0m
+[2.527s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_introspection_c[0m
+[2.538s] [ 45%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/ros2_bridge_support_pkg/msg/detail/my_custom_message__type_support.c.o[0m
+[2.544s] [ 45%] Built target ros2_bridge_support_pkg__rosidl_typesupport_c
+[2.567s] [ 48%] [32m[1mLinking C shared library libros2_bridge_support_pkg__rosidl_typesupport_introspection_c.so[0m
+[2.595s] [ 48%] Built target ros2_bridge_support_pkg__rosidl_typesupport_introspection_c
+[2.696s] [ 51%] [32m[1mLinking CXX shared library libros2_bridge_support_pkg__rosidl_typesupport_introspection_cpp.so[0m
+[2.711s] [ 54%] [32m[1mLinking CXX shared library libros2_bridge_support_pkg__rosidl_typesupport_cpp.so[0m
+[2.747s] [ 54%] Built target ros2_bridge_support_pkg__rosidl_typesupport_cpp
+[2.747s] [ 54%] Built target ros2_bridge_support_pkg__rosidl_typesupport_introspection_cpp
+[2.859s] [ 57%] [32m[1mLinking CXX shared library libros2_bridge_support_pkg__rosidl_typesupport_fastrtps_cpp.so[0m
+[2.921s] [ 57%] Built target ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_cpp
+[2.929s] [ 60%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[3.135s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_c[0m
+[3.148s] [ 63%] [32mBuilding CXX object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/ros2_bridge_support_pkg/msg/detail/my_custom_message__type_support_c.cpp.o[0m
+[3.430s] [ 66%] [32m[1mLinking CXX shared library libros2_bridge_support_pkg__rosidl_typesupport_fastrtps_c.so[0m
+[3.496s] [ 66%] Built target ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_c
+[3.504s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg[0m
+[3.512s] [ 66%] Built target ros2_bridge_support_pkg
+[3.521s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg__py[0m
+[3.521s] [35m[1mScanning dependencies of target ROS2_bridge_topic_sender[0m
+[3.530s] [ 69%] [34m[1mGenerating Python code for ROS interfaces[0m
+[3.552s] [ 72%] [32mBuilding CXX object CMakeFiles/ROS2_bridge_topic_sender.dir/src/ROS2_bridge_topic_sender.cpp.o[0m
+[3.897s] [ 72%] Built target ros2_bridge_support_pkg__py
+[3.905s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg__python[0m
+[3.922s] [ 75%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__python.dir/rosidl_generator_py/ros2_bridge_support_pkg/msg/_my_custom_message_s.c.o[0m
+[3.992s] [ 78%] [32m[1mLinking C shared library rosidl_generator_py/ros2_bridge_support_pkg/libros2_bridge_support_pkg__python.so[0m
+[4.026s] [ 78%] Built target ros2_bridge_support_pkg__python
+[4.036s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_c__pyext[0m
+[4.036s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_introspection_c__pyext[0m
+[4.036s] [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_c__pyext[0m
+[4.051s] [ 84%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/ros2_bridge_support_pkg/_ros2_bridge_support_pkg_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[4.051s] [ 84%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/ros2_bridge_support_pkg/_ros2_bridge_support_pkg_s.ep.rosidl_typesupport_c.c.o[0m
+[4.055s] [ 87%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/ros2_bridge_support_pkg/_ros2_bridge_support_pkg_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[4.138s] [ 93%] [32m[1mLinking C shared library rosidl_generator_py/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_introspection_c.cpython-38-x86_64-linux-gnu.so[0m
+[4.138s] [ 93%] [32m[1mLinking C shared library rosidl_generator_py/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_c.cpython-38-x86_64-linux-gnu.so[0m
+[4.139s] [ 96%] [32m[1mLinking CXX shared library rosidl_generator_py/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_fastrtps_c.cpython-38-x86_64-linux-gnu.so[0m
+[4.172s] [ 96%] Built target ros2_bridge_support_pkg__rosidl_typesupport_introspection_c__pyext
+[4.172s] [ 96%] Built target ros2_bridge_support_pkg__rosidl_typesupport_c__pyext
+[4.197s] [ 96%] Built target ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_c__pyext
+[7.561s] [100%] [32m[1mLinking CXX executable ROS2_bridge_topic_sender[0m
+[7.738s] [100%] Built target ROS2_bridge_topic_sender
+[7.747s] Invoked command in '/root/simple_bridge/ws_ros2/build/ros2_bridge_support_pkg' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake --build /root/simple_bridge/ws_ros2/build/ros2_bridge_support_pkg -- -j12 -l12
+[7.799s] Invoking command in '/root/simple_bridge/ws_ros2/build/ros2_bridge_support_pkg': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake --install /root/simple_bridge/ws_ros2/build/ros2_bridge_support_pkg
+[7.807s] -- Install configuration: ""
+[7.807s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ament_index/resource_index/rosidl_interfaces/ros2_bridge_support_pkg
+[7.807s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg
+[7.808s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg
+[7.808s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/my_custom_message.h
+[7.809s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/rosidl_generator_c__visibility_control.h
+[7.809s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail
+[7.809s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/my_custom_message__functions.h
+[7.809s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/my_custom_message__functions.c
+[7.809s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/my_custom_message__struct.h
+[7.809s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/my_custom_message__type_support.h
+[7.810s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/environment/library_path.sh
+[7.810s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/environment/library_path.dsv
+[7.810s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_generator_c.so
+[7.810s] -- Set runtime path of "/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_generator_c.so" to ""
+[7.810s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg
+[7.810s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg
+[7.811s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[7.811s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail
+[7.811s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/my_custom_message__rosidl_typesupport_fastrtps_c.h
+[7.811s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_typesupport_fastrtps_c.so
+[7.811s] -- Set runtime path of "/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_typesupport_fastrtps_c.so" to ""
+[7.811s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg
+[7.811s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg
+[7.811s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[7.811s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail
+[7.812s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/my_custom_message__rosidl_typesupport_fastrtps_cpp.hpp
+[7.812s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/dds_fastrtps
+[7.812s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_typesupport_fastrtps_cpp.so
+[7.812s] -- Set runtime path of "/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_typesupport_fastrtps_cpp.so" to ""
+[7.812s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg
+[7.812s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg
+[7.812s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[7.812s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail
+[7.813s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/my_custom_message__type_support.c
+[7.813s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/my_custom_message__rosidl_typesupport_introspection_c.h
+[7.813s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_typesupport_introspection_c.so
+[7.813s] -- Set runtime path of "/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_typesupport_introspection_c.so" to ""
+[7.813s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_typesupport_c.so
+[7.813s] -- Set runtime path of "/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_typesupport_c.so" to ""
+[7.814s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg
+[7.814s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg
+[7.814s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/my_custom_message.hpp
+[7.814s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail
+[7.814s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/my_custom_message__traits.hpp
+[7.815s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/my_custom_message__builder.hpp
+[7.815s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/my_custom_message__struct.hpp
+[7.815s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg
+[7.815s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg
+[7.816s] -- Up-to-date: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail
+[7.816s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/my_custom_message__type_support.cpp
+[7.816s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/include/ros2_bridge_support_pkg/msg/detail/my_custom_message__rosidl_typesupport_introspection_cpp.hpp
+[7.816s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_typesupport_introspection_cpp.so
+[7.816s] -- Set runtime path of "/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_typesupport_introspection_cpp.so" to ""
+[7.816s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_typesupport_cpp.so
+[7.816s] -- Set runtime path of "/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__rosidl_typesupport_cpp.so" to ""
+[7.816s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/environment/pythonpath.sh
+[7.816s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/environment/pythonpath.dsv
+[7.816s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/python3.8/site-packages/ros2_bridge_support_pkg/__init__.py
+[7.846s] Compiling '/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/python3.8/site-packages/ros2_bridge_support_pkg/__init__.py'...
+[7.851s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/python3.8/site-packages/ros2_bridge_support_pkg/msg
+[7.851s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/python3.8/site-packages/ros2_bridge_support_pkg/msg/_my_custom_message_s.c
+[7.851s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/python3.8/site-packages/ros2_bridge_support_pkg/msg/_my_custom_message.py
+[7.851s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/python3.8/site-packages/ros2_bridge_support_pkg/msg/__init__.py
+[7.852s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/python3.8/site-packages/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_fastrtps_c.cpython-38-x86_64-linux-gnu.so
+[7.852s] -- Set runtime path of "/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/python3.8/site-packages/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_fastrtps_c.cpython-38-x86_64-linux-gnu.so" to ""
+[7.852s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/python3.8/site-packages/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_introspection_c.cpython-38-x86_64-linux-gnu.so
+[7.853s] -- Set runtime path of "/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/python3.8/site-packages/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_introspection_c.cpython-38-x86_64-linux-gnu.so" to ""
+[7.853s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/python3.8/site-packages/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_c.cpython-38-x86_64-linux-gnu.so
+[7.854s] -- Set runtime path of "/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/python3.8/site-packages/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_c.cpython-38-x86_64-linux-gnu.so" to ""
+[7.854s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__python.so
+[7.854s] -- Set runtime path of "/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/libros2_bridge_support_pkg__python.so" to ""
+[7.854s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/msg/MyCustomMessage.idl
+[7.854s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/msg/MyCustomMessage.msg
+[7.855s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/ros2_bridge_support_pkg/ROS2_bridge_topic_sender
+[7.857s] -- Set runtime path of "/root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/lib/ros2_bridge_support_pkg/ROS2_bridge_topic_sender" to ""
+[7.857s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ament_index/resource_index/package_run_dependencies/ros2_bridge_support_pkg
+[7.857s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ament_index/resource_index/parent_prefix_path/ros2_bridge_support_pkg
+[7.857s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/environment/ament_prefix_path.sh
+[7.857s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/environment/ament_prefix_path.dsv
+[7.859s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/environment/path.sh
+[7.859s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/environment/path.dsv
+[7.859s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/local_setup.bash
+[7.859s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/local_setup.sh
+[7.859s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/local_setup.zsh
+[7.861s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/local_setup.dsv
+[7.861s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/package.dsv
+[7.861s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ament_index/resource_index/packages/ros2_bridge_support_pkg
+[7.861s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ros2_bridge_support_pkg__rosidl_generator_cExport.cmake
+[7.861s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ros2_bridge_support_pkg__rosidl_generator_cExport-noconfig.cmake
+[7.861s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ros2_bridge_support_pkg__rosidl_typesupport_introspection_cExport.cmake
+[7.861s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ros2_bridge_support_pkg__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[7.861s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ros2_bridge_support_pkg__rosidl_typesupport_cExport.cmake
+[7.861s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ros2_bridge_support_pkg__rosidl_typesupport_cExport-noconfig.cmake
+[7.861s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ros2_bridge_support_pkg__rosidl_generator_cppExport.cmake
+[7.862s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ros2_bridge_support_pkg__rosidl_typesupport_introspection_cppExport.cmake
+[7.862s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ros2_bridge_support_pkg__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[7.862s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ros2_bridge_support_pkg__rosidl_typesupport_cppExport.cmake
+[7.862s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ros2_bridge_support_pkg__rosidl_typesupport_cppExport-noconfig.cmake
+[7.862s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/rosidl_cmake-extras.cmake
+[7.863s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ament_cmake_export_dependencies-extras.cmake
+[7.863s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ament_cmake_export_libraries-extras.cmake
+[7.863s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ament_cmake_export_targets-extras.cmake
+[7.863s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ament_cmake_export_include_directories-extras.cmake
+[7.864s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[7.864s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[7.864s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ros2_bridge_support_pkgConfig.cmake
+[7.864s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/cmake/ros2_bridge_support_pkgConfig-version.cmake
+[7.865s] -- Installing: /root/simple_bridge/ws_ros2/install/ros2_bridge_support_pkg/share/ros2_bridge_support_pkg/package.xml
+[7.867s] Invoked command in '/root/simple_bridge/ws_ros2/build/ros2_bridge_support_pkg' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/foxy /usr/bin/cmake --install /root/simple_bridge/ws_ros2/build/ros2_bridge_support_pkg

@@ -61,32 +61,32 @@
 [35m[1mScanning dependencies of target ros2_bridge_support_pkg__cpp[0m
 [  3%] [34m[1mGenerating C code for ROS interfaces[0m
 [  6%] [34m[1mGenerating C++ code for ROS interfaces[0m
-[35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_generator_c[0m
 [  6%] Built target ros2_bridge_support_pkg__cpp
-[  9%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__rosidl_generator_c.dir/rosidl_generator_c/ros2_bridge_support_pkg/msg/detail/my_custom_message__functions.c.o[0m
-[ 18%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
-[ 18%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
-[ 18%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_generator_c[0m
+[ 12%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[ 12%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[ 15%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[ 18%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__rosidl_generator_c.dir/rosidl_generator_c/ros2_bridge_support_pkg/msg/detail/my_custom_message__functions.c.o[0m
 [ 21%] [32m[1mLinking C shared library libros2_bridge_support_pkg__rosidl_generator_c.so[0m
 [ 21%] Built target ros2_bridge_support_pkg__rosidl_generator_c
-[ 27%] [34m[1mGenerating C introspection for ROS interfaces[0m
 [ 27%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
-[35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_cpp[0m
-[ 30%] [32mBuilding CXX object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/ros2_bridge_support_pkg/msg/detail/dds_fastrtps/my_custom_message__type_support.cpp.o[0m
+[ 27%] [34m[1mGenerating C introspection for ROS interfaces[0m
 [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_cpp[0m
-[ 33%] [32mBuilding CXX object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/ros2_bridge_support_pkg/msg/my_custom_message__type_support.cpp.o[0m
 [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_introspection_cpp[0m
-[ 36%] [32mBuilding CXX object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/ros2_bridge_support_pkg/msg/detail/my_custom_message__type_support.cpp.o[0m
+[ 30%] [32mBuilding CXX object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/ros2_bridge_support_pkg/msg/my_custom_message__type_support.cpp.o[0m
+[ 33%] [32mBuilding CXX object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/ros2_bridge_support_pkg/msg/detail/my_custom_message__type_support.cpp.o[0m
+[35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_cpp[0m
+[ 36%] [32mBuilding CXX object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/ros2_bridge_support_pkg/msg/detail/dds_fastrtps/my_custom_message__type_support.cpp.o[0m
 [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_c[0m
 [ 39%] [32mBuilding CXX object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_c.dir/rosidl_typesupport_c/ros2_bridge_support_pkg/msg/my_custom_message__type_support.cpp.o[0m
+[ 42%] [32m[1mLinking CXX shared library libros2_bridge_support_pkg__rosidl_typesupport_c.so[0m
 [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_introspection_c[0m
-[ 42%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/ros2_bridge_support_pkg/msg/detail/my_custom_message__type_support.c.o[0m
-[ 45%] [32m[1mLinking CXX shared library libros2_bridge_support_pkg__rosidl_typesupport_c.so[0m
+[ 45%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/ros2_bridge_support_pkg/msg/detail/my_custom_message__type_support.c.o[0m
+[ 45%] Built target ros2_bridge_support_pkg__rosidl_typesupport_c
 [ 48%] [32m[1mLinking C shared library libros2_bridge_support_pkg__rosidl_typesupport_introspection_c.so[0m
-[ 48%] Built target ros2_bridge_support_pkg__rosidl_typesupport_c
 [ 48%] Built target ros2_bridge_support_pkg__rosidl_typesupport_introspection_c
-[ 51%] [32m[1mLinking CXX shared library libros2_bridge_support_pkg__rosidl_typesupport_cpp.so[0m
-[ 54%] [32m[1mLinking CXX shared library libros2_bridge_support_pkg__rosidl_typesupport_introspection_cpp.so[0m
+[ 51%] [32m[1mLinking CXX shared library libros2_bridge_support_pkg__rosidl_typesupport_introspection_cpp.so[0m
+[ 54%] [32m[1mLinking CXX shared library libros2_bridge_support_pkg__rosidl_typesupport_cpp.so[0m
 [ 54%] Built target ros2_bridge_support_pkg__rosidl_typesupport_cpp
 [ 54%] Built target ros2_bridge_support_pkg__rosidl_typesupport_introspection_cpp
 [ 57%] [32m[1mLinking CXX shared library libros2_bridge_support_pkg__rosidl_typesupport_fastrtps_cpp.so[0m
@@ -107,17 +107,17 @@
 [ 75%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__python.dir/rosidl_generator_py/ros2_bridge_support_pkg/msg/_my_custom_message_s.c.o[0m
 [ 78%] [32m[1mLinking C shared library rosidl_generator_py/ros2_bridge_support_pkg/libros2_bridge_support_pkg__python.so[0m
 [ 78%] Built target ros2_bridge_support_pkg__python
+[35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_c__pyext[0m
 [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_introspection_c__pyext[0m
 [35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_c__pyext[0m
-[35m[1mScanning dependencies of target ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_c__pyext[0m
-[ 84%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/ros2_bridge_support_pkg/_ros2_bridge_support_pkg_s.ep.rosidl_typesupport_c.c.o[0m
 [ 84%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/ros2_bridge_support_pkg/_ros2_bridge_support_pkg_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[ 84%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/ros2_bridge_support_pkg/_ros2_bridge_support_pkg_s.ep.rosidl_typesupport_c.c.o[0m
 [ 87%] [32mBuilding C object CMakeFiles/ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/ros2_bridge_support_pkg/_ros2_bridge_support_pkg_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
-[ 90%] [32m[1mLinking C shared library rosidl_generator_py/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_c.cpython-38-x86_64-linux-gnu.so[0m
-[ 93%] [32m[1mLinking CXX shared library rosidl_generator_py/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_fastrtps_c.cpython-38-x86_64-linux-gnu.so[0m
-[ 96%] [32m[1mLinking C shared library rosidl_generator_py/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_introspection_c.cpython-38-x86_64-linux-gnu.so[0m
-[ 96%] Built target ros2_bridge_support_pkg__rosidl_typesupport_c__pyext
+[ 93%] [32m[1mLinking C shared library rosidl_generator_py/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_introspection_c.cpython-38-x86_64-linux-gnu.so[0m
+[ 93%] [32m[1mLinking C shared library rosidl_generator_py/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_c.cpython-38-x86_64-linux-gnu.so[0m
+[ 96%] [32m[1mLinking CXX shared library rosidl_generator_py/ros2_bridge_support_pkg/ros2_bridge_support_pkg_s__rosidl_typesupport_fastrtps_c.cpython-38-x86_64-linux-gnu.so[0m
 [ 96%] Built target ros2_bridge_support_pkg__rosidl_typesupport_introspection_c__pyext
+[ 96%] Built target ros2_bridge_support_pkg__rosidl_typesupport_c__pyext
 [ 96%] Built target ros2_bridge_support_pkg__rosidl_typesupport_fastrtps_c__pyext
 [100%] [32m[1mLinking CXX executable ROS2_bridge_topic_sender[0m
 [100%] Built target ROS2_bridge_topic_sender

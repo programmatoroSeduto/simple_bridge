@@ -40,7 +40,9 @@
 -- Configured cppcheck exclude dirs and/or files: 
 -- Added test 'cpplint' to check C / C++ code against the Google style
 -- Configured cpplint exclude dirs and/or files: 
+-- Added test 'flake8' to check Python code syntax and style conventions
 -- Added test 'lint_cmake' to check CMake code style
+-- Added test 'pep257' to check Python code against some of the style conventions in PEP 257
 -- Added test 'uncrustify' to check C / C++ code style
 -- Configured uncrustify additional arguments: 
 -- Added test 'xmllint' to check XML markup files
@@ -52,6 +54,8 @@
 [100%] [32m[1mLinking CXX executable ros2_sender[0m
 [100%] Built target ros2_sender
 -- Install configuration: ""
+-- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/launch
+-- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/launch/run_single_topic_test.py
 -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/lib/my_custom_sender/ros2_sender
 -- Set runtime path of "/root/simple_bridge/ws_ros2/install/my_custom_sender/lib/my_custom_sender/ros2_sender" to ""
 -- Installing: /root/simple_bridge/ws_ros2/install/my_custom_sender/share/ament_index/resource_index/package_run_dependencies/my_custom_sender

@@ -26,7 +26,6 @@ rosidl_generate_interfaces( ${PROJECT_NAME}
 	DEPENDENCIES std_msgs
 )
 
-# add executable normale con le sue dipendenze
 add_executable( ROS2_bridge_topic_sender src/ROS2_bridge_topic_sender.cpp )
 ament_target_dependencies( ROS2_bridge_topic_sender rclcpp std_msgs )
 rosidl_target_interfaces( ROS2_bridge_topic_sender ${PROJECT_NAME} "rosidl_typesupport_cpp" )

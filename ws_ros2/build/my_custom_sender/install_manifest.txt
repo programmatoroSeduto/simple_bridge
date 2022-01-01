@@ -1,3 +1,4 @@
+/root/simple_bridge/ws_ros2/install/my_custom_sender/share/my_custom_sender/launch/run_single_topic_test.py
 /root/simple_bridge/ws_ros2/install/my_custom_sender/lib/my_custom_sender/ros2_sender
 /root/simple_bridge/ws_ros2/install/my_custom_sender/share/ament_index/resource_index/package_run_dependencies/my_custom_sender
 /root/simple_bridge/ws_ros2/install/my_custom_sender/share/ament_index/resource_index/parent_prefix_path/my_custom_sender

@@ -1,5 +1,7 @@
 #! /bin/bash
 
+# build all the packages from ws_ros1, ws_ros2 and ws_bridge
+
 rm -rf /root/simple_bridge/logs
 mkdir /root/simple_bridge/logs
 terminator --working-directory=/root/simple_bridge/ws_ros1 --title="ROS1 build" -e "source ./build.sh > /root/simple_bridge/logs/ws_ros1_build.log"

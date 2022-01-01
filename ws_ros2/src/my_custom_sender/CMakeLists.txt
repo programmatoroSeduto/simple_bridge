@@ -17,6 +17,12 @@ endif()
 
 # find dependencies
 find_package( ament_cmake REQUIRED )
+
+install(DIRECTORY
+  launch
+  DESTINATION share/${PROJECT_NAME}
+)
+
 find_package( rclcpp REQUIRED )
 find_package( ros2_bridge_support_pkg REQUIRED )
 
