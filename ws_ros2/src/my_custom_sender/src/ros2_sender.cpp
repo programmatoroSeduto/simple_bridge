@@ -49,6 +49,7 @@ private:
 		msg.value_float = 25.33;
 		msg.value_string = "the best the best the best the best";
 
+		OUTLOG( "send!" );
 		pub->publish( msg );
 	}
 	

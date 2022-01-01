@@ -22,12 +22,46 @@ string data
 #define QUEUE_SZ_DEFAULT 100
 
 #define LOGSQUARE( str ) "[" << str << "] "
-#define OUTLOG( msg_stream ) RCLCPP_INFO_STREAM( this->get_logger( ), msg_stream )
-#define OUTERR( msg_err_stream ) RCLCPP_ERROR_STREAM( this->get_logger( ), "ERROR: " << msg_err_stream )
+#define OUTLOG( msg_stream ) RCLCPP_INFO_STREAM( rclcpp::get_logger( NODE_NAME ), msg_stream )
+#define OUTERR( msg_err_stream ) RCLCPP_ERROR_STREAM( rclcpp::get_logger( NODE_NAME ), "ERROR: " << msg_err_stream )
 #define SS( this_string ) std::string( this_string )
 #define SSS( this_thing ) std::to_string( this_thing )
 
-#define BRIDGE_MSG( topic ) OUTLOG( "bridge topic: " << LOGSQUARE( topic ) << " (ROS2) --> (ROS1)" << LOGSQUARE( get_name_of_topic( topic ) ) )
+#define BRIDGE_MSG_ROS2_ROS1( topic ) OUTLOG( "bridge topic: " << LOGSQUARE( topic ) << " (ROS2) --> (ROS1)" << LOGSQUARE( BRIDGE_TOPIC_NAME_PREFIX << topic ) )
+
+// cast the message 'MyCustomMessage' to string
+std::string cast_message( const ros2_bridge_support_pkg::msg::MyCustomMessage::SharedPtr msg )
+{
+	std::string str = "";
+	
+	str += ( msg->value_boolean ? "1" : "0" );
+	str += " ";
+	str += std::to_string( msg->value_integer );
+	str += " ";
+	str += std::to_string( msg->value_float );
+	str += " ";
+	str += msg->value_string;
+	
+	return str;
+}
+
+template< typename topicT >
+class bridge_topic_container
+{
+public:
+	typename rclcpp::Subscription< topicT >::SharedPtr sub;
+	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub;
+	
+	void bridge_cbk( const typename topicT::SharedPtr msg ) const
+	{
+		// cast the message to string
+		std_msgs::msg::String bridge_data;
+		bridge_data.data = cast_message( msg );
+		
+		// publish the message
+		this->pub->publish( bridge_data );
+	}
+};
 
 class ros2_bridge_topic_sender : public rclcpp::Node
 {
@@ -36,8 +70,8 @@ public:
 		rclcpp::Node( NODE_NAME )
 	{
 		// bridge for the custom topic
-		BRIDGE_MSG( SUB_CUSTOM );
-		make_bridge_custom_topic( );
+		BRIDGE_MSG_ROS2_ROS1( SUB_CUSTOM );
+		make_bridge_ros2_to_ros1<ros2_bridge_support_pkg::msg::MyCustomMessage>( SUB_CUSTOM, &topic_my_custom_message );
 		
 		OUTLOG( "online!" );
 	}
@@ -49,61 +83,44 @@ private:
 	std::string get_name_of_topic( std::string topic_name )
 		{ return SS(BRIDGE_TOPIC_NAME_PREFIX) + topic_name; }
 	
-	// --- CUSTOM TOPIC ---
-	
-	// input handler for custom topic
-	rclcpp::Subscription<ros2_bridge_support_pkg::msg::MyCustomMessage>::SharedPtr sub_custom_topic;
-	
-	// bridge handler to custom topic
-	rclcpp::Publisher<std_msgs::msg::String>::SharedPtr bridge_custom_topic;
-	
-	// cast the message 'MyCustomMessage' to string
-	// per il const alla fine della funzione vedi
-	// https://stackoverflow.com/questions/26963510/error-passing-const-as-this-argument-of-discards-qualifiers
-	std::string cast_my_custom_message( 
-		ros2_bridge_support_pkg::msg::MyCustomMessage::SharedPtr msg ) const
-	{
-		std::string str = "";
-		
-		str += ( msg->value_boolean ? "1" : "0" );
-		str += " ";
-		str += std::to_string( msg->value_integer );
-		str += " ";
-		str += std::to_string( msg->value_float );
-		str += " ";
-		str += msg->value_string;
-		
-		return str;
-	}		
-	
-	// subscriber callback for custom topic
-	void bridge_custom_topic_cbk( 
-		const ros2_bridge_support_pkg::msg::MyCustomMessage::SharedPtr msg ) const
+	// subscriber callback
+	template< typename msgT >
+	void bridge_cbk( const typename msgT::SharedPtr msg, bridge_topic_container<msgT>& topic ) const
 	{
 		// cast the message to string
 		std_msgs::msg::String bridge_data;
-		bridge_data.data = cast_my_custom_message( msg );
+		bridge_data.data = cast_message( msg );
 		
 		// publish the message
-		bridge_custom_topic->publish( bridge_data );
+		topic.pub->publish( bridge_data );
 	}
 	
 	// make the link
-	void make_bridge_custom_topic( )
+	template<typename msgT>
+	void make_bridge_ros2_to_ros1( std::string topic_name, bridge_topic_container<msgT>* rt )
 	{
-		// subscription
-		sub_custom_topic = this->create_subscription<ros2_bridge_support_pkg::msg::MyCustomMessage>(
-			SUB_CUSTOM,
-			QUEUE_SZ_DEFAULT,
-			std::bind( &ros2_bridge_topic_sender::bridge_custom_topic_cbk, this, _1 )
-		);
-		
 		// publisher
-		bridge_custom_topic = this->create_publisher<std_msgs::msg::String>(
-			get_name_of_topic( SUB_CUSTOM ), 
+		rt->pub = this->create_publisher<std_msgs::msg::String>(
+			get_name_of_topic( topic_name ), 
 			QUEUE_SZ_DEFAULT 
 		);
+		
+		// subscription
+		//    https://answers.ros.org/question/308386/ros2-add-arguments-to-callback/
+		// std::function<void(const typename msgT::SharedPtr msg)> fcn = std::bind( &ros2_bridge_topic_sender::bridge_cbk, this, _1, rt );
+		rt->sub = this->create_subscription<ros2_bridge_support_pkg::msg::MyCustomMessage>(
+			topic_name,
+			QUEUE_SZ_DEFAULT,
+			std::bind( &bridge_topic_container<msgT>::bridge_cbk, rt, _1 )
+		);
 	}
+	
+	// --- CUSTOM TOPIC ---
+	
+	// topic class container
+	bridge_topic_container<ros2_bridge_support_pkg::msg::MyCustomMessage> topic_my_custom_message;
+	
+
 };
 
 int main( int argc, char* argv[] )

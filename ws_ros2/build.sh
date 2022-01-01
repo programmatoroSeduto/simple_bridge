@@ -10,7 +10,7 @@ set -e
 # BUILD ros2_bridge_support_pkg
 colcon build --packages-select ros2_bridge_support_pkg
 source /root/simple_bridge/ws_ros2/install/setup.sh
-clear
+# clear
 
 # BUILD my_custom_sender
 colcon build --packages-select my_custom_sender
