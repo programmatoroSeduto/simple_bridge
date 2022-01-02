@@ -26,35 +26,10 @@ string data
 #define SS( this_string ) std::string( this_string )
 #define SSS( this_thing ) std::to_string( this_thing )
 
-#define BRIDGE_MSG( topic ) OUTLOG( "bridge topic: " << LOGSQUARE( get_name_of_topic( topic ) ) << " (ROS2) --> (ROS1)" << LOGSQUARE( topic ) )
+#define BRIDGE_MSG( topic ) OUTLOG( "bridge topic: " << LOGSQUARE( BRIDGE_TOPIC_NAME_PREFIX << topic ) << " (ROS2) --> (ROS1)" << LOGSQUARE( topic ) )
 
-class ros1_bridge_topic_receiver
+namespace str_tools
 {
-public:
-	ros1_bridge_topic_receiver( )
-	{
-		// bridge the custom topic
-		BRIDGE_MSG( PUB_CUSTOM );
-		make_bridge_custom_topic( );
-		
-		OUTLOG( "online!" );
-	}
-	
-	void spin( )
-	{
-		ros::spin( );
-	}
-
-private:
-	// --- GENERAL PURPOSE METHODS ---
-	
-	// node handle
-	ros::NodeHandle nh;
-	
-	// generate the name of the topic on the bridge
-	std::string get_name_of_topic( std::string topic_name )
-		{ return SS(BRIDGE_TOPIC_NAME_PREFIX) + topic_name; }
-	
 	// split a string using a separator
 	std::vector<std::string> string_split( std::string str, char separator )
 	{
@@ -76,59 +51,94 @@ private:
 		return res;
 	}
 	
-	// --- CUSTOM TOPIC ---
-	
-	// bridge handler from custom topic
-	ros::Subscriber bridge_custom_topic;
-	
-	// outut handler  to custom topic
-	ros::Publisher pub_custom_topic;
-	
+	// generate the name of the topic on the bridge
+	std::string get_name_of_topic( std::string topic_name )
+	{
+		return SS(BRIDGE_TOPIC_NAME_PREFIX) + topic_name; 
+	}
+}
+
+namespace cast_tools
+{
 	// cast-back the message 'MyCustomMessage' from string to type
 	ros1_bridge_support_pkg::MyCustomMessage cast_back_my_custom_message(
-		const std_msgs::StringConstPtr& msg )
+		const std_msgs::String::ConstPtr& msg )
 	{
 		// split the message
-		std::vector<std::string> content = string_split( msg->data, ' ' );
+		std::vector<std::string> content = str_tools::string_split( msg->data, ' ' );
 		
 		// cast field by field
 		ros1_bridge_support_pkg::MyCustomMessage rmsg;
 		rmsg.value_boolean = ( content[0] == "1" ? true : false );
 		rmsg.value_integer = atoi( content[1].c_str( ) );
 		rmsg.value_float = atof( content[2].c_str( ) );
+		/// @bug also a string value is split using this cast-back method!!!!
 		rmsg.value_string = content[3];
 		
 		return rmsg;
 	}
+}
+
+// vedi
+//    https://answers.ros.org/question/232068/call-to-publish-on-an-invalid-publisher/
+//    https://stackoverflow.com/questions/37502096/ros-binding-a-callback-function-and-a-object-member-to-a-subscriber-node
+//    http://wiki.ros.org/roscpp_tutorials/Tutorials/UsingClassMethodsAsCallbacks
+// Purtroppo ROS1 non permette il binding come in ROS2, quindi la funzione
+//     viene eseguita in un contesto diverso da quello di definizione. 
+template<typename Topic_type>
+class bridge_topic
+{
+public:
+	bridge_topic( ) { }
 	
-	// listener callback for custom topic
-	void bridge_custom_topic_cbk( const std_msgs::StringConstPtr& msg )
+	// subscription callback
+	void bridge_cbk( const std_msgs::String::ConstPtr& msg )
 	{
 		// cast-back the message
-		ros1_bridge_support_pkg::MyCustomMessage rmsg = 
-			cast_back_my_custom_message( msg );
+		Topic_type rmsg = cast_tools::cast_back_my_custom_message( msg );
 		
 		// publish the message
-		pub_custom_topic.publish( rmsg );
+		this->pub.publish( rmsg );
 	}
 	
-	// make the link
-	void make_bridge_custom_topic( )
+	// publisher
+	ros::Subscriber sub;
+	
+	// subscriber
+	ros::Publisher pub;
+};
+
+class ros1_bridge_topic_receiver
+{
+public:
+	ros1_bridge_topic_receiver( )
 	{
-		// subscription
-		bridge_custom_topic = nh.subscribe( 
-			get_name_of_topic( PUB_CUSTOM ),
-			QUEUE_SZ_DEFAULT,
-			&ros1_bridge_topic_receiver::bridge_custom_topic_cbk,
-			this 
-		);
+		// bridge the custom topic
+		BRIDGE_MSG( PUB_CUSTOM );
+		make_link_topic<ros1_bridge_support_pkg::MyCustomMessage>( 
+			&my_custom_topic, PUB_CUSTOM, str_tools::get_name_of_topic( PUB_CUSTOM ) );
 		
-		// publisher
-		pub_custom_topic = nh.advertise<ros1_bridge_support_pkg::MyCustomMessage>(
-			PUB_CUSTOM,
-			QUEUE_SZ_DEFAULT
-		);
+		OUTLOG( "online!" );
 	}
+	
+	void spin( ) { ros::spin( ); }
+
+private:
+	// node handle
+	ros::NodeHandle nh;
+	
+	// make the link
+	template< typename Ttopic >
+	void make_link_topic( bridge_topic<Ttopic>* br, std::string pub_topic, std::string sub_topic )
+	{
+		OUTLOG( "subscription to " << sub_topic );
+		br->sub = nh.subscribe( sub_topic, QUEUE_SZ_DEFAULT, &bridge_topic<Ttopic>::bridge_cbk, br );
+		
+		OUTLOG( "publisher on " << pub_topic );
+		br->pub = nh.advertise<Ttopic>( pub_topic, QUEUE_SZ_DEFAULT );
+	}
+	
+	bridge_topic<ros1_bridge_support_pkg::MyCustomMessage> my_custom_topic;
 };
 
 int main( int argc, char* argv[] )
