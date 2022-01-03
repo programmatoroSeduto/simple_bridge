@@ -1,0 +1,14 @@
+# bridge build
+./ws_bridge/.git
+./ws_bridge/install/
+./ws_bridge/log
+./ws_bridge/src
+
+# ros1 build
+./ws_ros1/build
+./ws_ros1/devel
+
+# ros2 build
+./ws_ros2/build
+./ws_ros2/install
+./ws_ros2/log

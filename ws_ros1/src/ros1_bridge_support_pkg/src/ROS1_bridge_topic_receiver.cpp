@@ -32,7 +32,7 @@ namespace str_tools
 {
 	/// @brief split a string using a separator 
 	///    @return this function returns an empty vector if the string is not well-formed
-	std::vector<std::string> string_split( std::string str, char separator )
+	std::vector<std::string> pack_split( std::string str, char separator )
 	{
 		std::vector<std::string> res;
 		std::string q = "";
@@ -92,19 +92,45 @@ namespace str_tools
 
 namespace cast_tools
 {
+	// cast back a boolean
+	bool cast_back_field( std::string pack )
+	{
+		return ( pack == "1" ? true : false );
+	}
+	
+	// get a string type
+	std::string cast_field( std::string pack, bool use_sep = false, std::string sep = " " )
+	{
+		std::string str = "/{" + pack + "/}";
+		
+		if( use_sep ) str += sep;
+		return str;
+	}
+	
+	// bool type to string
+	std::string cast_field( bool pack, bool use_sep = false, std::string sep = " " )
+	{
+		std::string str = ( pack ? "1" : "0" );
+		
+		if( use_sep ) str += sep;
+		return str;
+	}
+	
+	// cast the message 'MyCustomMessage'
+	// ... ( message to string )
+	
 	// cast-back the message 'MyCustomMessage' from string to type
-	ros1_bridge_support_pkg::MyCustomMessage cast_back_my_custom_message(
+	ros1_bridge_support_pkg::MyCustomMessage cast_back_message(
 		const std_msgs::String::ConstPtr& msg )
 	{
 		// split the message
-		std::vector<std::string> content = str_tools::string_split( msg->data, ' ' );
+		std::vector<std::string> content = str_tools::pack_split( msg->data, ' ' );
 		
 		// cast field by field
 		ros1_bridge_support_pkg::MyCustomMessage rmsg;
-		rmsg.value_boolean = ( content[0] == "1" ? true : false );
+		rmsg.value_boolean = cast_tools::cast_back_field( content[0] );
 		rmsg.value_integer = atoi( content[1].c_str( ) );
 		rmsg.value_float = atof( content[2].c_str( ) );
-		/// @bug also a string value is split using this cast-back method!!!!
 		rmsg.value_string = content[3];
 		
 		return rmsg;
@@ -123,21 +149,21 @@ class bridge_topic
 public:
 	bridge_topic( ) { }
 	
-	// subscription callback
+	ros::Publisher pub;
+	ros::Subscriber sub;
+	
+	// "OUT BRIDGE" : from ROS1 to ROS2 (cast)
+	// ... (use methods override)
+	
+	// "IN BRIDGE" : from ROS2 to ROS1 (cast back)
 	void bridge_cbk( const std_msgs::String::ConstPtr& msg )
 	{
 		// cast-back the message
-		Topic_type rmsg = cast_tools::cast_back_my_custom_message( msg );
+		Topic_type rmsg = cast_tools::cast_back_message( msg );
 		
 		// publish the message
 		this->pub.publish( rmsg );
 	}
-	
-	// publisher
-	ros::Subscriber sub;
-	
-	// subscriber
-	ros::Publisher pub;
 };
 
 class ros1_bridge_topic_receiver
@@ -147,8 +173,7 @@ public:
 	{
 		// bridge the custom topic
 		BRIDGE_MSG( PUB_CUSTOM );
-		make_link_topic<ros1_bridge_support_pkg::MyCustomMessage>( 
-			&my_custom_topic, PUB_CUSTOM, str_tools::get_name_of_topic( PUB_CUSTOM ) );
+		make_link_topic_in<ros1_bridge_support_pkg::MyCustomMessage>( &my_custom_topic, PUB_CUSTOM );
 		
 		OUTLOG( "online!" );
 	}
@@ -161,13 +186,14 @@ private:
 	
 	// make the link
 	template< typename Ttopic >
-	void make_link_topic( bridge_topic<Ttopic>* br, std::string pub_topic, std::string sub_topic )
+	void make_link_topic_in( bridge_topic<Ttopic>* br_class, std::string pub_topic )
 	{
-		OUTLOG( "subscription to " << sub_topic );
-		br->sub = nh.subscribe( sub_topic, QUEUE_SZ_DEFAULT, &bridge_topic<Ttopic>::bridge_cbk, br );
+		OUTLOG( "subscription to " << str_tools::get_name_of_topic( pub_topic ) );
+		br_class->sub = nh.subscribe( str_tools::get_name_of_topic( pub_topic ), 
+			QUEUE_SZ_DEFAULT, &bridge_topic<Ttopic>::bridge_cbk, br_class );
 		
 		OUTLOG( "publisher on " << pub_topic );
-		br->pub = nh.advertise<Ttopic>( pub_topic, QUEUE_SZ_DEFAULT );
+		br_class->pub = nh.advertise<Ttopic>( pub_topic, QUEUE_SZ_DEFAULT );
 	}
 	
 	bridge_topic<ros1_bridge_support_pkg::MyCustomMessage> my_custom_topic;
