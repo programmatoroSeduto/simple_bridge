@@ -1,4 +1,6 @@
 
+// clear && ./build.sh && source ./devel/setup.bash
+
 #include "rclcpp/rclcpp.hpp"
 #include <string>
 #include <memory>
@@ -29,20 +31,38 @@ string data
 
 #define BRIDGE_MSG_ROS2_ROS1( topic ) OUTLOG( "bridge topic: " << LOGSQUARE( topic ) << " (ROS2) --> (ROS1)" << LOGSQUARE( BRIDGE_TOPIC_NAME_PREFIX << topic ) )
 
-// cast the message 'MyCustomMessage' to string
-std::string cast_message( const ros2_bridge_support_pkg::msg::MyCustomMessage::SharedPtr msg )
+namespace cast_tools
 {
-	std::string str = "";
+	// get a string type
+	std::string field_to_str( std::string pack, bool use_sep = false, std::string sep = " " )
+	{
+		std::string str = "/{" + pack + "/}";
+		
+		if( use_sep ) str += sep;
+		return str;
+	}
 	
-	str += ( msg->value_boolean ? "1" : "0" );
-	str += " ";
-	str += std::to_string( msg->value_integer );
-	str += " ";
-	str += std::to_string( msg->value_float );
-	str += " ";
-	str += msg->value_string;
+	// bool type to string
+	std::string field_to_str( bool pack, bool use_sep = false, std::string sep = " " )
+	{
+		std::string str = ( pack ? "1" : "0" );
+		
+		if( use_sep ) str += sep;
+		return str;
+	}
 	
-	return str;
+	// cast the message 'MyCustomMessage' to string
+	std::string cast_message( const ros2_bridge_support_pkg::msg::MyCustomMessage::SharedPtr msg )
+	{
+		std::string str = "";
+		
+		str += cast_tools::field_to_str( msg->value_boolean );
+		str += SSS( msg->value_integer ) + " ";
+		str += SSS( msg->value_float ) + " ";
+		str += cast_tools::field_to_str( msg->value_string, false );
+		
+		return str;
+	}
 }
 
 template< typename topicT >
@@ -56,7 +76,7 @@ public:
 	{
 		// cast the message to string
 		std_msgs::msg::String bridge_data;
-		bridge_data.data = cast_message( msg );
+		bridge_data.data = cast_tools::cast_message( msg );
 		
 		// publish the message
 		this->pub->publish( bridge_data );
@@ -89,7 +109,7 @@ private:
 	{
 		// cast the message to string
 		std_msgs::msg::String bridge_data;
-		bridge_data.data = cast_message( msg );
+		bridge_data.data = cast_tools::cast_message( msg );
 		
 		// publish the message
 		topic.pub->publish( bridge_data );

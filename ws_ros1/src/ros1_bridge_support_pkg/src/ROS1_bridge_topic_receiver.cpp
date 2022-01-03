@@ -35,10 +35,15 @@ namespace str_tools
 	{
 		std::vector<std::string> res;
 		std::string q = "";
+		bool string_found = false;
 		
 		for( unsigned int i=0; i<str.length(); ++i )
 		{
-			if( str[i] == separator )
+			if( str[i] == "}" )
+			{
+				
+			}
+			else if( str[i] == separator )
 			{
 				if( q != "" ) res.push_back( q );
 				q = "";
