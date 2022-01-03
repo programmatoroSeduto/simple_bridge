@@ -30,30 +30,57 @@ string data
 
 namespace str_tools
 {
-	// split a string using a separator
+	/// @brief split a string using a separator 
+	///    @return this function returns an empty vector if the string is not well-formed
 	std::vector<std::string> string_split( std::string str, char separator )
 	{
 		std::vector<std::string> res;
 		std::string q = "";
-		bool string_found = false;
+		bool force_no_sep = false;
 		
 		for( unsigned int i=0; i<str.length(); ++i )
 		{
-			if( str[i] == "}" )
+			if( force_no_sep )
 			{
-				
+				if( (str[i] == '/') && ((i+1) < str.length()) && (str[i+1] == '}') )
+				{
+					// string field is over
+					force_no_sep = false;
+					i += 1;
+				}
+				else
+					q += str[i];
 			}
 			else if( str[i] == separator )
 			{
+				// save the previous token
 				if( q != "" ) res.push_back( q );
 				q = "";
+				
+				if( 
+					((i + 2) < str.length()) &&
+					str[i+1] == '/' &&
+					str[i+2] == '{'
+					)
+				{
+					// reading a string field
+					force_no_sep = true;
+					
+					// skip the group " /{"
+					i += 2; 
+				}
 			}
 			else
 				q += str[i];
 		}
-		if( q != "" ) res.push_back( q );
 		
-		return res;
+		if( !force_no_sep )
+		{
+			if( q != "" ) res.push_back( q );
+			return res;
+		}
+		else  // bad format
+			return std::vector<std::string>( );
 	}
 	
 	// generate the name of the topic on the bridge
