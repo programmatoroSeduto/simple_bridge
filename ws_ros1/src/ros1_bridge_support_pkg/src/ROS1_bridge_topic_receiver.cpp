@@ -1,11 +1,9 @@
-
 /*
 # TERMINALE 1 : 
 rostopic pub /custom_topic_out ros1_bridge_support_pkg/MyCustomMessage "value_boolean: false
 value_integer: 0
 value_float: 0.0
 value_string: ''" 
-
 # TERMINALE 2 :
 rostopic echo /bridge_topic/custom_topic_out
 */
@@ -30,13 +28,23 @@ float32 value_float
 string value_string
 */
 #include "std_msgs/String.h"
-#define BRIDGE_TOPIC_NAME_PREFIX "/bridge_topic"
 /*
 string data
 */
+#include "ros1_bridge_support_pkg/MyCustomService.h"
+#define SERVICE_CUSTOM "/my_custom_service"
+/*
+int32 index
+string mystery_word
+---
+bool guessed
+*/
 
 #define NODE_NAME "ros1_bridge_support_topic_receiver"
+#define BRIDGE_TOPIC_NAME_PREFIX "/bridge_topic"
+#define BRIDGE_SERVICE_NAME_PREFIX "/bridge_service"
 #define QUEUE_SZ_DEFAULT 100
+#define WAITING_DELAY 0.01
 
 #define LOGSQUARE( str ) "[" << str << "] "
 #define OUTLABEL LOGSQUARE( NODE_NAME )
@@ -51,6 +59,8 @@ namespace str_tools
 {
 	/// @brief split a string using a separator 
 	///    @return this function returns an empty vector if the string is not well-formed
+	/// @bug empty string results in one field missing!
+	/// @todo how about empty strings? Suppose you have many string fields, ...empty...
 	std::vector<std::string> pack_split( std::string str, char separator )
 	{
 		std::vector<std::string> res;
@@ -106,6 +116,18 @@ namespace str_tools
 	std::string get_name_of_topic( std::string topic_name )
 	{
 		return SS(BRIDGE_TOPIC_NAME_PREFIX) + topic_name; 
+	}
+	
+	// generate the name of the topic for the service request
+	std::string get_name_of_service_request( std::string serv_name )
+	{
+		return SS(BRIDGE_SERVICE_NAME_PREFIX) + serv_name + "_request";
+	}
+	
+	// generate the name of the topic for the service response
+	std::string get_name_of_service_response( std::string serv_name )
+	{
+		return SS(BRIDGE_SERVICE_NAME_PREFIX) + serv_name + "_response";
 	}
 }
 
@@ -163,6 +185,29 @@ namespace cast_tools
 		
 		return rmsg;
 	}
+	
+	// cast the service request 'MyCustomService'
+	std::string cast_service_request( ros1_bridge_support_pkg::MyCustomService::Request &req )
+	{
+		std::string str = "";
+		
+		str += SSS( req.index ) + " ";
+		str += cast_tools::cast_field( req.mystery_word, false );
+		
+		return str;
+	}
+	
+	// cast back the service response 'MyCustomService'
+	ros1_bridge_support_pkg::MyCustomService::Response cast_back_service_response( std::string &msg )
+	{
+		std::vector< std::string > content = str_tools::pack_split( msg, ' ' );
+		
+		OUTLOG( "HERE! CAST BACK! array size: " << content.size( ) );
+		ros1_bridge_support_pkg::MyCustomService::Response res;
+		res.guessed = cast_tools::cast_back_field( content[0] );
+		OUTLOG( "HERE! after CAST BACK!" );
+		return res;
+	}
 }
 
 // vedi
@@ -202,17 +247,94 @@ public:
 	}
 };
 
+template< typename serviceT >
+class bridge_service
+{
+public:
+	bridge_service( ) { }
+	
+	// first topic from ROS2
+	ros::Subscriber topic_in;
+	// second topic to ROS2
+	ros::Publisher topic_out;
+	// request from endpoint
+	ros::ServiceServer service_in; 
+	
+	// callback service from endpoint
+	bool service_in_callback(
+		typename serviceT::Request &req,
+		typename serviceT::Response &res
+		)
+	{
+		OUTLOG( "ROS1 BRIDGE REQUEST" );
+		
+		// set the pending request and reset the response (use a specific cast method)
+		this->pending_request = req;
+		this->response_string = "";
+		
+		// cast the request to string
+		std_msgs::String req_str;
+		req_str.data = cast_tools::cast_service_request( req );
+		
+		// send the request to ROS2 through topic_out 
+		topic_out.publish( req_str );
+		
+		// wait for a responde from ROS2 (don't use sleep!!!)
+		OUTLOG( "waiting for a response from ROS2..." );
+		waiting_response = true;
+		while( waiting_response ) 
+		{
+			( ros::Duration( WAITING_DELAY ) ).sleep( );
+			ros::spinOnce( );
+			
+			OUTLOG( "waiting..." );
+			
+			/// @todo some break condition here? (maximum time?)
+		}
+		OUTLOG( "got a response from ROS2 -> [" << response_string << "]" );
+		
+		// cast back the message to response and write it (use a specific cast-back method)
+		res = cast_tools::cast_back_service_response( response_string );
+		
+		return true;
+	}
+	
+	// callback service subscriber
+	// precisamente il caso in oggetto:
+	//    https://stackoverflow.com/questions/49059435/segmentation-fault-core-dumped-ros-c-arrow
+	void topic_in_callback( const std_msgs::String::ConstPtr& res )
+	{
+		if( waiting_response )
+		{
+			// store the message into the class variable
+			response_string = res->data;
+			
+			waiting_response = false;
+		}
+	}
+	
+private:
+	// pending request
+	typename serviceT::Request pending_request;
+	// waiting for a response from ROS2
+	bool waiting_response = false;
+	// the response as string
+	std::string response_string;
+};
+
 class ros1_bridge_topic_receiver
 {
 public:
 	ros1_bridge_topic_receiver( ) // using static mapping
 	{
 		// bridge the custom topic
-		// BRIDGE_MSG( PUB_CUSTOM );
-		OUTLOG( "from ROS2: " << PUB_CUSTOM_IN );
+		OUTLOG( "--- TOPIC from ROS2: " << PUB_CUSTOM_IN );
 		make_link_topic_in<ros1_bridge_support_pkg::MyCustomMessage>( &my_custom_topic_in, PUB_CUSTOM_IN );
-		OUTLOG( "to ROS2: " << SUB_CUSTOM_OUT );
+		OUTLOG( "--- TOPIC to ROS2: " << SUB_CUSTOM_OUT );
 		make_link_topic_out<ros1_bridge_support_pkg::MyCustomMessage>( &my_custom_topic_out, SUB_CUSTOM_OUT );
+		
+		OUTLOG( "--- SERVICE to ROS2: " << SERVICE_CUSTOM );
+		make_link_service_out<ros1_bridge_support_pkg::MyCustomService>( &my_custom_service_out, SERVICE_CUSTOM );
 		
 		OUTLOG( "online!" );
 	}
@@ -223,7 +345,10 @@ private:
 	// node handle
 	ros::NodeHandle nh;
 	
-	// create a "bridge in" topic
+	// --- LINK METHODS ---
+	
+	/// create a "bridge in" topic
+	/// @note 'out' topic as 'sub' from the end node and 'pub' to bridge
 	template< typename Ttopic >
 	void make_link_topic_in( bridge_topic< Ttopic >* br_class, std::string pub_topic )
 	{
@@ -241,7 +366,8 @@ private:
 			);
 	}
 	
-	// create a "bridge out" topic
+	/// create a "bridge out" topic
+	/// @note 'in' topic as 'sub' from bridge and 'pub' to the end node
 	template< typename Ttopic >
 	void make_link_topic_out( bridge_topic< Ttopic >* br_class, std::string sub_topic )
 	{
@@ -260,8 +386,41 @@ private:
 			);
 	}
 	
+	/// create a "bridge out" service
+	template< typename serviceT >
+	void make_link_service_out( bridge_service< serviceT >* br_class, std::string service_name )
+	{
+		// out publisher -- request
+		OUTLOG( "publisher on " << str_tools::get_name_of_service_request( service_name ) );
+		br_class->topic_out = nh.advertise<std_msgs::String>(
+			str_tools::get_name_of_service_request( service_name ),
+			QUEUE_SZ_DEFAULT
+			);
+		
+		// in subscriber -- response
+		OUTLOG( "subscription to " << str_tools::get_name_of_service_response( service_name ) );
+		br_class->topic_in = nh.subscribe(
+			str_tools::get_name_of_service_response( service_name ),
+			QUEUE_SZ_DEFAULT,
+			&bridge_service< serviceT >::topic_in_callback,
+			br_class
+			);
+		
+		// in service from endpoint
+		OUTLOG( "creating 'in' service " << service_name );
+		br_class->service_in = nh.advertiseService(
+			service_name,
+			&bridge_service< serviceT >::service_in_callback,
+			br_class
+			);
+	}
+	
+	// --- TOPICS AND SERVICES ---
+	
 	bridge_topic<ros1_bridge_support_pkg::MyCustomMessage> my_custom_topic_in;
 	bridge_topic<ros1_bridge_support_pkg::MyCustomMessage> my_custom_topic_out;
+	
+	bridge_service<ros1_bridge_support_pkg::MyCustomService> my_custom_service_out;
 };
 
 int main( int argc, char* argv[] )

@@ -28,9 +28,12 @@ find_package( ros2_bridge_support_pkg REQUIRED )
 
 add_executable( ros2_sender src/ros2_sender.cpp )
 ament_target_dependencies( ros2_sender rclcpp ros2_bridge_support_pkg )
+add_executable( test_service src/test_service.cpp )
+ament_target_dependencies( test_service rclcpp ros2_bridge_support_pkg )
 
 install( TARGETS 
 	ros2_sender 
+	test_service
 DESTINATION lib/${PROJECT_NAME} )
 
 if(BUILD_TESTING)

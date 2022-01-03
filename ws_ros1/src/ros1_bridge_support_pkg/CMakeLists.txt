@@ -60,6 +60,7 @@ add_message_files( FILES MyCustomMessage.msg )
 #   Service1.srv
 #   Service2.srv
 # )
+add_service_files( FILES MyCustomService.srv )
 
 ## Generate actions in the 'action' folder
 # add_action_files(

@@ -1,0 +1,45 @@
+## SOURCE ROS1
+source /opt/ros/noetic/setup.bash && source /root/simple_bridge/ws_ros1/devel/setup.bash && terminator --hidden -e "source /root/simple_bridge/shell/shell_roscore.sh" && clear
+source /opt/ros/noetic/setup.bash && source /root/simple_bridge/ws_ros1/devel/setup.bash && clear
+
+
+## MANUAL STARTUPS ROS1
+rosrun my_custom_listener ros1_receiver
+rosrun my_custom_listener test_client
+rosrun ros1_bridge_support_pkg ROS1_bridge_topic_receiver
+
+## CHECKS ON ROS1
+rosservice call /my_custom_service "index: 500
+mystery_word: 'ciao'" 
+rostopic echo /bridge_service/my_custom_service_request
+rostopic pub /bridge_service/my_custom_service_response std_msgs/String "data: '1'" 
+
+## SOURCE ROS2
+source /opt/ros/foxy/setup.sh && source /root/simple_bridge/ws_ros2/install/setup.sh && clear
+
+## MANUAL STARTUPS ROS2
+ros2 run my_custom_sender ros2_sender
+ros2 run my_custom_sender test_service
+ros2 run ros2_bridge_support_pkg ROS2_bridge_topic_sender
+source /root/simple_bridge/shell/shell_bridge.sh
+
+## CHECKS ON ROS2
+ros2 pkg list | grep my_
+ros2 pkg list | grep bridge
+ros2 pkg list | grep ros2_bridge_support_pkg
+ros2 pkg executables ros2_bridge_support_pkg 
+ros2 service list
+ros2 service type /my_custom_service
+ros2 service call /my_custom_service ros2_bridge_support_pkg/srv/MyCustomService
+ros2 topic list
+ros2 topic echo /bridge_service/my_custom_service_response
+ros2 topic pub --once /bridge_service/my_custom_service_request std_msgs/msg/String "{data: '500 /{ciao/}'}"
+
+## RUN THE BRIDGE WITH 
+source /root/simple_bridge/shell/shell_bridge.sh
+
+## BUILD ROS1
+clear && ./build.sh && source ./devel/setup.bash
+
+## BUILD ROS2
+clear && ./build.sh && source ./install/setup.sh

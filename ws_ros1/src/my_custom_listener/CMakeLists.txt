@@ -135,6 +135,7 @@ include_directories(
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/my_custom_listener_node.cpp)
 add_executable( ros1_receiver src/ros1_receiver.cpp )
+add_executable( test_client src/test_client.cpp )
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -151,6 +152,7 @@ add_executable( ros1_receiver src/ros1_receiver.cpp )
 #   ${catkin_LIBRARIES}
 # )
 target_link_libraries( ros1_receiver ${catkin_LIBRARIES} )
+target_link_libraries( test_client ${catkin_LIBRARIES} )
 
 #############
 ## Install ##
