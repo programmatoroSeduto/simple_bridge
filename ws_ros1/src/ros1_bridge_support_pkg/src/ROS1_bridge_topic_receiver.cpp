@@ -1,9 +1,28 @@
+
+/*
+# TERMINALE 1 : 
+rostopic pub /custom_topic_out ros1_bridge_support_pkg/MyCustomMessage "value_boolean: false
+value_integer: 0
+value_float: 0.0
+value_string: ''" 
+
+# TERMINALE 2 :
+rostopic echo /bridge_topic/custom_topic_out
+*/
+
 #include "ros/ros.h"
 #include <string>
 #include <vector>
 
 #include "ros1_bridge_support_pkg/MyCustomMessage.h"
-#define PUB_CUSTOM "/custom_topic"
+// from ROS2
+//    PUB : pubblico quanto ricevuto da ROS2 al nodo che usa il topic
+//    IN : il nodo vede il topic come ingresso
+#define PUB_CUSTOM_IN "/custom_topic_a"
+// to ROS2
+//    SUB : leggo le informazioni da trasmettere a ROS2
+//    OUT : il nodo vede il topic come output
+#define SUB_CUSTOM_OUT "/custom_topic_b"
 /*
 bool value_boolean
 int32 value_integer
@@ -117,11 +136,20 @@ namespace cast_tools
 	}
 	
 	// cast the message 'MyCustomMessage'
-	// ... ( message to string )
+	std::string cast_message( const ros1_bridge_support_pkg::MyCustomMessage::ConstPtr& msg )
+	{
+		std::string str = "";
+		
+		str += cast_tools::cast_field( msg->value_boolean );
+		str += SSS( msg->value_integer ) + " ";
+		str += SSS( msg->value_float ) + " ";
+		str += cast_tools::cast_field( msg->value_string, false );
+		
+		return str;
+	}
 	
 	// cast-back the message 'MyCustomMessage' from string to type
-	ros1_bridge_support_pkg::MyCustomMessage cast_back_message(
-		const std_msgs::String::ConstPtr& msg )
+	ros1_bridge_support_pkg::MyCustomMessage cast_back_message( const std_msgs::String::ConstPtr& msg )
 	{
 		// split the message
 		std::vector<std::string> content = str_tools::pack_split( msg->data, ' ' );
@@ -153,10 +181,18 @@ public:
 	ros::Subscriber sub;
 	
 	// "OUT BRIDGE" : from ROS1 to ROS2 (cast)
-	// ... (use methods override)
+	void bridge_cbk_out( const ros1_bridge_support_pkg::MyCustomMessage::ConstPtr& msg )
+	{
+		// cast-back the message
+		std_msgs::String rmsg;
+		rmsg.data = cast_tools::cast_message( msg );
+		
+		// publish the message
+		this->pub.publish( rmsg );
+	}
 	
 	// "IN BRIDGE" : from ROS2 to ROS1 (cast back)
-	void bridge_cbk( const std_msgs::String::ConstPtr& msg )
+	void bridge_cbk_in( const std_msgs::String::ConstPtr& msg )
 	{
 		// cast-back the message
 		Topic_type rmsg = cast_tools::cast_back_message( msg );
@@ -169,11 +205,14 @@ public:
 class ros1_bridge_topic_receiver
 {
 public:
-	ros1_bridge_topic_receiver( )
+	ros1_bridge_topic_receiver( ) // using static mapping
 	{
 		// bridge the custom topic
-		BRIDGE_MSG( PUB_CUSTOM );
-		make_link_topic_in<ros1_bridge_support_pkg::MyCustomMessage>( &my_custom_topic, PUB_CUSTOM );
+		// BRIDGE_MSG( PUB_CUSTOM );
+		OUTLOG( "from ROS2: " << PUB_CUSTOM_IN );
+		make_link_topic_in<ros1_bridge_support_pkg::MyCustomMessage>( &my_custom_topic_in, PUB_CUSTOM_IN );
+		OUTLOG( "to ROS2: " << SUB_CUSTOM_OUT );
+		make_link_topic_out<ros1_bridge_support_pkg::MyCustomMessage>( &my_custom_topic_out, SUB_CUSTOM_OUT );
 		
 		OUTLOG( "online!" );
 	}
@@ -184,19 +223,45 @@ private:
 	// node handle
 	ros::NodeHandle nh;
 	
-	// make the link
+	// create a "bridge in" topic
 	template< typename Ttopic >
-	void make_link_topic_in( bridge_topic<Ttopic>* br_class, std::string pub_topic )
+	void make_link_topic_in( bridge_topic< Ttopic >* br_class, std::string pub_topic )
 	{
 		OUTLOG( "subscription to " << str_tools::get_name_of_topic( pub_topic ) );
-		br_class->sub = nh.subscribe( str_tools::get_name_of_topic( pub_topic ), 
-			QUEUE_SZ_DEFAULT, &bridge_topic<Ttopic>::bridge_cbk, br_class );
+		br_class->sub = nh.subscribe( 
+			str_tools::get_name_of_topic( pub_topic ), 
+			QUEUE_SZ_DEFAULT, 
+			&bridge_topic< Ttopic >::bridge_cbk_in, br_class 
+			);
 		
 		OUTLOG( "publisher on " << pub_topic );
-		br_class->pub = nh.advertise<Ttopic>( pub_topic, QUEUE_SZ_DEFAULT );
+		br_class->pub = nh.advertise<Ttopic>( 
+			pub_topic, 
+			QUEUE_SZ_DEFAULT 
+			);
 	}
 	
-	bridge_topic<ros1_bridge_support_pkg::MyCustomMessage> my_custom_topic;
+	// create a "bridge out" topic
+	template< typename Ttopic >
+	void make_link_topic_out( bridge_topic< Ttopic >* br_class, std::string sub_topic )
+	{
+		OUTLOG( "subscription to " << sub_topic );
+		br_class->sub = nh.subscribe( 
+			sub_topic, 
+			QUEUE_SZ_DEFAULT, 
+			&bridge_topic< Ttopic >::bridge_cbk_out, 
+			br_class 
+			);
+		
+		OUTLOG( "publisher on " << str_tools::get_name_of_topic( sub_topic ) );
+		br_class->pub = nh.advertise< std_msgs::String >( 
+			str_tools::get_name_of_topic( sub_topic ),
+			QUEUE_SZ_DEFAULT 
+			);
+	}
+	
+	bridge_topic<ros1_bridge_support_pkg::MyCustomMessage> my_custom_topic_in;
+	bridge_topic<ros1_bridge_support_pkg::MyCustomMessage> my_custom_topic_out;
 };
 
 int main( int argc, char* argv[] )

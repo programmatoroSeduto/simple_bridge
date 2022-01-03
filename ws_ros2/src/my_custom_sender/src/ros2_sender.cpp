@@ -5,7 +5,7 @@
 using namespace std::chrono_literals;
 
 #include "ros2_bridge_support_pkg/msg/my_custom_message.hpp"
-#define PUB_CUSTOM "/custom_topic"
+#define PUB_CUSTOM "/custom_topic_a"
 /*
 bool value_boolean
 int32 value_integer

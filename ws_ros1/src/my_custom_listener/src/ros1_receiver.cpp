@@ -2,7 +2,7 @@
 #include "ros/ros.h"
 
 #include "ros1_bridge_support_pkg/MyCustomMessage.h"
-#define SUB_CUSTOM "/custom_topic"
+#define SUB_CUSTOM "/custom_topic_a"
 /*
 bool value_boolean
 int32 value_integer
