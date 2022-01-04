@@ -57,60 +57,91 @@ bool guessed
 
 namespace str_tools
 {
-	/// @brief split a string using a separator 
-	///    @return this function returns an empty vector if the string is not well-formed
-	/// @bug empty string results in one field missing!
-	/// @todo how about empty strings? Suppose you have many string fields, ...empty...
-	std::vector<std::string> pack_split( std::string str, char separator )
-	{
-		std::vector<std::string> res;
-		std::string q = "";
-		bool force_no_sep = false;
-		
-		for( unsigned int i=0; i<str.length(); ++i )
-		{
-			if( force_no_sep )
-			{
-				if( (str[i] == '/') && ((i+1) < str.length()) && (str[i+1] == '}') )
-				{
-					// string field is over
-					force_no_sep = false;
-					i += 1;
-				}
-				else
-					q += str[i];
-			}
-			else if( str[i] == separator )
-			{
-				// save the previous token
-				if( q != "" ) res.push_back( q );
-				q = "";
-				
-				if( 
-					((i + 2) < str.length()) &&
-					str[i+1] == '/' &&
-					str[i+2] == '{'
-					)
-				{
-					// reading a string field
-					force_no_sep = true;
-					
-					// skip the group " /{"
-					i += 2; 
-				}
-			}
-			else
-				q += str[i];
-		}
-		
-		if( !force_no_sep )
-		{
-			if( q != "" ) res.push_back( q );
-			return res;
-		}
-		else  // bad format
-			return std::vector<std::string>( );
-	}
+bool check_seq_at( std::string str_arg, std::string to_find, int i, bool check_end = false )
+    {
+        if( i >= str_arg.length( ) ) return false;
+        
+        std::size_t next_idx = i + to_find.length( );
+        std::string sub = str_arg.substr( i, to_find.length( ) );
+        bool found = ( to_find == sub );
+        
+        if( check_end )
+            return found && ( next_idx >= str_arg.length( ) );
+        else
+            return found;
+    }
+    
+    // split a string using a separator 
+    //    this function returns an empty vector if the string is not well-formed
+    std::vector<std::string> pack_split( std::string str, char separator )
+    {
+    	std::vector<std::string> res;
+    	std::string q = "";
+    	bool force_no_sep = false;
+    	
+    	for( unsigned int i=0; i<str.length(); ++i )
+    	{
+    	    if( force_no_sep )
+    	    {
+    	        if( str_tools::check_seq_at( str, "/} ", i) || str_tools::check_seq_at( str, "/}", i, true) )
+                {
+                    // END OF A NON-EMPTY string
+                    force_no_sep = false;
+                    res.push_back( q );
+                    q = "";
+                    
+                    ++i;
+                }
+                else
+                    // continue reading
+                    q += str[i];
+    	        
+    	    }
+    		else if( str[i] == separator )
+    		{
+    		    // save the previous token
+    			if( q != "" ) 
+    			{
+    			    res.push_back( q );
+    			    q = "";
+    			}
+    		}
+    		else if( str[i] == '/' )
+            {
+                if( str_tools::check_seq_at( str, "/{", i ) )
+                {
+                    if( str_tools::check_seq_at( str, "/{//} ", i) || str_tools::check_seq_at( str, "/{//}", i, true) )
+                    {
+                        // EMPTY STRING DETECTED
+                        // insert a blank into the vector
+                        res.push_back( "" );
+                        
+                        // jump to the next char (taking into accout the for loop)
+                        i += 5;
+                    }
+                    else
+                    {
+                        // NON-EMPTY STRING DETECTED
+                        // skip the group "/{" (taking into accout the for loop)
+                        ++i;
+                        
+                        // enter in no-sep mode
+                        force_no_sep = true;
+                    }
+                }
+    		}
+    		else
+    			q += str[i];
+    	}
+    	
+    	if( !force_no_sep )
+    	{
+        	if( q != "" ) res.push_back( q );
+        	return res;
+    	}
+    	else  // bad format
+    	    return std::vector<std::string>( );
+    }
 	
 	// generate the name of the topic on the bridge
 	std::string get_name_of_topic( std::string topic_name )
@@ -139,9 +170,13 @@ namespace cast_tools
 		return ( pack == "1" ? true : false );
 	}
 	
-	// get a string type
+	/// @brief get a string type 
+	/// @note the empty string generates a sequence /{//} which indicates a empty field
 	std::string cast_field( std::string pack, bool use_sep = false, std::string sep = " " )
 	{
+		// generate the empty sequence if the string is empty
+		pack = ( pack == "" ? pack : "/" );
+		
 		std::string str = "/{" + pack + "/}";
 		
 		if( use_sep ) str += sep;
