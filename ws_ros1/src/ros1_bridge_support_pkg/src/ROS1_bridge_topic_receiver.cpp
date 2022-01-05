@@ -33,6 +33,7 @@ string data
 */
 #include "ros1_bridge_support_pkg/MyCustomService.h"
 #define SERVICE_CUSTOM "/my_custom_service"
+#define CLIENT_CUSTOM_OUT "/my_custom_service_second"
 /*
 int32 index
 string mystery_word
@@ -172,10 +173,11 @@ namespace cast_tools
 	
 	/// @brief get a string type 
 	/// @note the empty string generates a sequence /{//} which indicates a empty field
-	std::string cast_field( std::string pack, bool use_sep = false, std::string sep = " " )
+	std::string 
+	cast_field( std::string pack, bool use_sep = false, std::string sep = " " )
 	{
 		// generate the empty sequence if the string is empty
-		pack = ( pack == "" ? pack : "/" );
+		pack = ( pack != "" ? pack : "/" );
 		
 		std::string str = "/{" + pack + "/}";
 		
@@ -184,7 +186,8 @@ namespace cast_tools
 	}
 	
 	// bool type to string
-	std::string cast_field( bool pack, bool use_sep = false, std::string sep = " " )
+	std::string 
+	cast_field( bool pack, bool use_sep = false, std::string sep = " " )
 	{
 		std::string str = ( pack ? "1" : "0" );
 		
@@ -193,7 +196,8 @@ namespace cast_tools
 	}
 	
 	// cast the message 'MyCustomMessage'
-	std::string cast_message( const ros1_bridge_support_pkg::MyCustomMessage::ConstPtr& msg )
+	std::string 
+	cast_message( const ros1_bridge_support_pkg::MyCustomMessage::ConstPtr& msg )
 	{
 		std::string str = "";
 		
@@ -206,7 +210,8 @@ namespace cast_tools
 	}
 	
 	// cast-back the message 'MyCustomMessage' from string to type
-	ros1_bridge_support_pkg::MyCustomMessage cast_back_message( const std_msgs::String::ConstPtr& msg )
+	ros1_bridge_support_pkg::MyCustomMessage 
+	cast_back_message( const std_msgs::String::ConstPtr& msg )
 	{
 		// split the message
 		std::vector<std::string> content = str_tools::pack_split( msg->data, ' ' );
@@ -222,7 +227,8 @@ namespace cast_tools
 	}
 	
 	// cast the service request 'MyCustomService'
-	std::string cast_service_request( ros1_bridge_support_pkg::MyCustomService::Request &req )
+	std::string 
+	cast_service_request( ros1_bridge_support_pkg::MyCustomService::Request &req )
 	{
 		std::string str = "";
 		
@@ -232,15 +238,39 @@ namespace cast_tools
 		return str;
 	}
 	
-	// cast back the service response 'MyCustomService'
-	ros1_bridge_support_pkg::MyCustomService::Response cast_back_service_response( std::string &msg )
+	// cast back the service request of 'MyCustomService'
+	ros1_bridge_support_pkg::MyCustomService::Request 
+	cast_back_service_request( std::string msg )
 	{
 		std::vector< std::string > content = str_tools::pack_split( msg, ' ' );
 		
-		OUTLOG( "HERE! CAST BACK! array size: " << content.size( ) );
+		ros1_bridge_support_pkg::MyCustomService::Request req;
+		req.index = atoi( content[0].c_str( ) );
+		req.mystery_word = content[1];
+		
+		return req;
+	}
+	
+	// cast the service response 'MyCustomService'
+	std::string 
+	cast_service_response( ros1_bridge_support_pkg::MyCustomService::Response &res )
+	{
+		std::string str = "";
+		
+		str += cast_tools::cast_field( res.guessed, false );
+		
+		return str;
+	}
+	
+	// cast back the service response 'MyCustomService'
+	ros1_bridge_support_pkg::MyCustomService::Response 
+	cast_back_service_response( std::string msg )
+	{
+		std::vector< std::string > content = str_tools::pack_split( msg, ' ' );
+		
 		ros1_bridge_support_pkg::MyCustomService::Response res;
 		res.guessed = cast_tools::cast_back_field( content[0] );
-		OUTLOG( "HERE! after CAST BACK!" );
+		
 		return res;
 	}
 }
@@ -293,10 +323,12 @@ public:
 	// second topic to ROS2
 	ros::Publisher topic_out;
 	// request from endpoint
-	ros::ServiceServer service_in; 
+	ros::ServiceServer service_out; 
+	// request to the endpoint
+	ros::ServiceClient service_in;
 	
 	// callback service from endpoint
-	bool service_in_callback(
+	bool service_out_callback(
 		typename serviceT::Request &req,
 		typename serviceT::Response &res
 		)
@@ -332,6 +364,29 @@ public:
 		res = cast_tools::cast_back_service_response( response_string );
 		
 		return true;
+	}
+	
+	/// callback service to the endpoint
+	void service_in_callback( const std_msgs::String::ConstPtr& msg )
+	{
+		OUTLOG( "received a ROS2->ROS1 request from ROS2 endpoint" ); 
+		OUTLOG( "with data: [" << msg->data << "]" );
+		
+		// cast back the message
+		ros1_bridge_support_pkg::MyCustomService srv;
+		srv.request = cast_tools::cast_back_service_request( msg->data );
+		
+		// call the service and get the response
+		OUTLOG( "waiting for a response from the service..." );
+		service_in.call( srv );
+		
+		// cast the message
+		std_msgs::String res_str;
+		res_str.data = cast_tools::cast_service_response( srv.response );
+		
+		// and publish it
+		OUTLOG( "returning response: [" << res_str.data << "]" );
+		this->topic_out.publish( res_str );
 	}
 	
 	// callback service subscriber
@@ -370,6 +425,8 @@ public:
 		
 		OUTLOG( "--- SERVICE to ROS2: " << SERVICE_CUSTOM );
 		make_link_service_out<ros1_bridge_support_pkg::MyCustomService>( &my_custom_service_out, SERVICE_CUSTOM );
+		OUTLOG( "--- SERVICE from ROS2: " << CLIENT_CUSTOM_OUT );
+		make_link_service_in<ros1_bridge_support_pkg::MyCustomService>( &my_custom_service_in, CLIENT_CUSTOM_OUT );
 		
 		OUTLOG( "online!" );
 	}
@@ -422,6 +479,7 @@ private:
 	}
 	
 	/// create a "bridge out" service
+	/// @note 'in' i.e. the client runs in ROS1
 	template< typename serviceT >
 	void make_link_service_out( bridge_service< serviceT >* br_class, std::string service_name )
 	{
@@ -430,7 +488,7 @@ private:
 		br_class->topic_out = nh.advertise<std_msgs::String>(
 			str_tools::get_name_of_service_request( service_name ),
 			QUEUE_SZ_DEFAULT
-			);
+		);
 		
 		// in subscriber -- response
 		OUTLOG( "subscription to " << str_tools::get_name_of_service_response( service_name ) );
@@ -439,15 +497,43 @@ private:
 			QUEUE_SZ_DEFAULT,
 			&bridge_service< serviceT >::topic_in_callback,
 			br_class
-			);
+		);
 		
 		// in service from endpoint
-		OUTLOG( "creating 'in' service " << service_name );
-		br_class->service_in = nh.advertiseService(
+		OUTLOG( "creating 'out' service " << service_name );
+		br_class->service_out = nh.advertiseService(
 			service_name,
+			&bridge_service< serviceT >::service_out_callback,
+			br_class
+		);
+	}
+	
+	/// create a 'in' service
+	/// @note 'in' i.e. the client runs in ROS2
+	template< typename serviceT >
+	void make_link_service_in( bridge_service< serviceT >* br_class, std::string service_name )
+	{
+		// in subscriber -- request
+		OUTLOG( "subscription to " << str_tools::get_name_of_service_request( service_name ) );
+		br_class->topic_in = nh.subscribe(
+			str_tools::get_name_of_service_request( service_name ),
+			QUEUE_SZ_DEFAULT,
 			&bridge_service< serviceT >::service_in_callback,
 			br_class
-			);
+		);
+		
+		// out publisher -- response 
+		OUTLOG( "publisher on " << str_tools::get_name_of_service_response( service_name ) );
+		br_class->topic_out = nh.advertise<std_msgs::String>(
+			str_tools::get_name_of_service_response( service_name ),
+			QUEUE_SZ_DEFAULT
+		);
+		
+		// out service to endpoint
+		OUTLOG( "creating 'in' service " << service_name );
+		br_class->service_in = nh.serviceClient<ros1_bridge_support_pkg::MyCustomService>(
+			service_name
+		);
 	}
 	
 	// --- TOPICS AND SERVICES ---
@@ -456,6 +542,7 @@ private:
 	bridge_topic<ros1_bridge_support_pkg::MyCustomMessage> my_custom_topic_out;
 	
 	bridge_service<ros1_bridge_support_pkg::MyCustomService> my_custom_service_out;
+	bridge_service<ros1_bridge_support_pkg::MyCustomService> my_custom_service_in;
 };
 
 int main( int argc, char* argv[] )

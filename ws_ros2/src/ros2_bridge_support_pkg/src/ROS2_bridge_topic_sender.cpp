@@ -1,11 +1,13 @@
-
 // clear && ./build.sh && source ./install/setup.sh
+// ros2 run ros2_bridge_support_pkg ROS2_bridge_topic_sender
+
 
 
 #include "rclcpp/rclcpp.hpp"
 #include <string>
 #include <memory>
 using std::placeholders::_1;
+using std::placeholders::_2;
 
 #include "ros2_bridge_support_pkg/msg/my_custom_message.hpp"
 // to ROS1
@@ -28,6 +30,7 @@ string data
 */
 #include "ros2_bridge_support_pkg/srv/my_custom_service.hpp"
 #define CLIENT_CUSTOM "/my_custom_service"
+#define SERVICE_CUSTOM_OUT "/my_custom_service_second"
 /*
 int32 index
 string mystery_word
@@ -55,7 +58,7 @@ namespace str_tools
 {
 	bool check_seq_at( std::string str_arg, std::string to_find, int i, bool check_end = false )
     {
-        if( i >= str_arg.length( ) ) return false;
+        if( ((std::size_t)i) >= str_arg.length( ) ) return false;
         
         std::size_t next_idx = i + to_find.length( );
         std::string sub = str_arg.substr( i, to_find.length( ) );
@@ -171,7 +174,7 @@ namespace cast_tools
 	std::string cast_field( std::string pack, bool use_sep = false, std::string sep = " " )
 	{
 		// generate the empty sequence if the string is empty
-		pack = ( pack == "" ? pack : "/" );
+		pack = ( pack != "" ? pack : "/" );
 		
 		std::string str = "/{" + pack + "/}";
 		
@@ -270,6 +273,7 @@ namespace cast_tools
 	}
 }
 
+/// representation of a topic in ROS2
 template< typename topicT_pub, typename topicT_sub >
 class bridge_topic
 {
@@ -301,6 +305,7 @@ public:
 	}
 };
 
+/// representation of a service in ROS2 
 template< typename serviceT >
 class bridge_service
 {
@@ -311,19 +316,58 @@ public:
 	rclcpp::Subscription< std_msgs::msg::String >::SharedPtr topic_in;
 	// second topic to ROS1
 	rclcpp::Publisher< std_msgs::msg::String >::SharedPtr topic_out;
-	// call to endpoint
-	typename rclcpp::Client< serviceT >::SharedPtr service_out;
+	// call to endpoint ROS2
+	typename rclcpp::Service< serviceT >::SharedPtr service_out;
+	// callback from endpoint ROS2
+	typename rclcpp::Client< serviceT >::SharedPtr service_in;
 	
 	// callback group for the subscriber
 	rclcpp::callback_group::CallbackGroup::SharedPtr callback_group;
 	// subscription options
 	rclcpp::SubscriptionOptions subscription_options;
 	
-	// subscriber which calls the endpoint
+	/// @brief callback for the 'out' service from ROS2 endpoint to ROS1 endpoint
+	/// @note 'out' means that the client runs in ROS2
 	void service_out_callback(
+		const std::shared_ptr< typename serviceT::Request > req,
+		std::shared_ptr< typename serviceT::Response > res )
+	{
+		OUTLOG( "received a ROS2->ROS1 service request from ROS2" );
+		
+		// set the pending request and reset the response
+		this->pending_request = *req;
+		this->response_string = "";
+		
+		// cast the request to string
+		std_msgs::msg::String req_str;
+		req_str.data = cast_tools::cast_service_request( req );
+		
+		// send the request to ROS1 through topic_out 
+		this->topic_out->publish( req_str );
+		waiting_response = true;
+		
+		OUTLOG( "waiting a response from ROS1..." );
+		// per le attese, vedi
+		//    https://github.com/ros2/tutorials/blob/master/rclcpp_tutorials/src/topics/talker.cpp
+		// (potrebbe non funzionare...)
+		rclcpp::WallRate loop_rate(500);
+		while( waiting_response )
+		{
+			loop_rate.sleep( );
+		}
+		OUTLOG( "got a response from ROS1 -> [" << response_string << "]" );
+		
+		// cast back the message and write it
+		*res = cast_tools::cast_back_service_response( response_string );
+	}
+	
+	/// subscriber which calls the endpoint
+	/// @note 'in' i.e. the client runs in ROS1
+	void service_in_callback(
 		const std_msgs::msg::String::SharedPtr msg ) const
 	{
-		OUTLOG( "received a request: [" << msg->data << "]" );
+		OUTLOG( "received a ROS1->ROS2 request from ROS1 endpoint" ); 
+		OUTLOG( "with data: [" << msg->data << "]" );
 		
 		// cast back of the request
 		auto req = std::make_shared<ros2_bridge_support_pkg::srv::MyCustomService::Request>( );
@@ -331,26 +375,10 @@ public:
 		
 		// call the endpoint and get the result
 		OUTLOG( "waiting for a response from the service..." );
-		auto res_future = (service_out->async_send_request( req ));
-		// vedi:
-		//     https://en.cppreference.com/w/cpp/thread/shared_future
-		// e anche
-		//    https://en.cppreference.com/w/cpp/thread/shared_future/get
-		// std::shared_future<std::shared_ptr<ros2_bridge_support_pkg::srv::MyCustomService_Response_<std::allocator<void> > > >
-		// rclcpp::spin_until_future_complete( node, result ):
-		// sfortunatamente, vedi anche
-		//    https://answers.ros.org/question/343279/ros2-how-to-implement-a-sync-service-client-in-a-node/
+		auto res_future = (service_in->async_send_request( req ));
+		// synchronous request
 		res_future.wait( );
-		// e qui
-		//    https://answers.ros.org/question/354132/how-to-call-spin_some-or-spin_until_future_complete-in-member-functions/
-		// questo potrebbe risolvere il problema
-		// https://answers.ros.org/question/343948/what-is-the-rclcppnode_interfacesnodebaseinterface-for/
-		// rclcpp::spin_until_future_complete( interface, res_future );
 		auto res = res_future.get( );
-		// e ovviamente, come se non bastasse, anche questo:
-		//    https://tier4.github.io/autoware.proj/tree/main/developer_guide/knowhow/PortingToROS2/
-		// tutti vogliono fare così:
-		//    https://answers.ros.org/question/302037/ros2-how-to-call-a-service-from-the-callback-function-of-a-subscriber/
 		
 		// cast the response from the endpoint
 		std_msgs::msg::String res_str;
@@ -360,6 +388,26 @@ public:
 		OUTLOG( "returning response: [" << res_str.data << "]" );
 		this->topic_out->publish( res_str );
 	}
+	
+	/// callback service subscriber
+	void topic_in_callback(
+		const std_msgs::msg::String::SharedPtr msg ) //const
+	{
+		if( waiting_response )
+		{
+			// store the message into the class variable
+			this->response_string = msg->data;
+			this->waiting_response = false;
+		}
+	}
+
+private:
+	// pending request
+	typename serviceT::Request pending_request;
+	// waiting for a response from ROS2
+	bool waiting_response = false;
+	// the response as string
+	std::string response_string = "";
 };
 
 class ros2_bridge_topic_sender : public rclcpp::Node
@@ -383,10 +431,18 @@ public:
 			SUB_CUSTOM_OUT
 		);
 		
+		// 'in' the client runs in ROS1
 		OUTLOG( "SERVICE --- ROS2 service ROS1 client: " << CLIENT_CUSTOM );
 		make_link_service_in<ros2_bridge_support_pkg::srv::MyCustomService>(
 			&my_custom_service_in,
 			CLIENT_CUSTOM
+		);
+		
+		// 'out' the client runs in ROS2
+		OUTLOG( "SERVICE --- ROS1 service ROS2 client: " << SERVICE_CUSTOM_OUT );
+		make_link_service_out<ros2_bridge_support_pkg::srv::MyCustomService>(
+			&my_custom_service_out,
+			SERVICE_CUSTOM_OUT
 		);
 		
 		OUTLOG( "online!" );
@@ -456,7 +512,7 @@ private:
 		br_class->topic_in = this->create_subscription< std_msgs::msg::String >(
 			str_tools::get_name_of_service_request( service_name ),
 			10,  // THE NEW MAGIC NUMBER! (what does it mean '10'? Why especially '10'? Has it a name?)
-			std::bind( &bridge_service< serviceT >::service_out_callback, br_class, _1 ),
+			std::bind( &bridge_service< serviceT >::service_in_callback, br_class, _1 ),
 			br_class->subscription_options
 		);
 		
@@ -468,8 +524,41 @@ private:
 		);
 		
 		// out service to endpoint
+		OUTLOG( "creating 'in' service " << service_name );
+		br_class->service_in = this->create_client< serviceT >( service_name );
+	}
+	
+	/// create a "bridge out" service
+	/// @todo maybe the label "out" is conceptually wrong...
+	template< typename serviceT >
+	void make_link_service_out( bridge_service< serviceT >* br_class, std::string service_name )
+	{
+		// new callback group
+		br_class->callback_group = this->create_callback_group(rclcpp::callback_group::CallbackGroupType::Reentrant);
+		br_class->subscription_options.callback_group = br_class->callback_group;
+		
+		// in subscriber -- response
+		OUTLOG( "subscription to " << str_tools::get_name_of_service_response( service_name ) );
+		br_class->topic_in = this->create_subscription< std_msgs::msg::String >(
+			str_tools::get_name_of_service_response( service_name ),
+			10,  
+			std::bind( &bridge_service< serviceT >::topic_in_callback, br_class, _1 ),
+			br_class->subscription_options
+		);
+		
+		// out publisher -- request
+		OUTLOG( "publisher on " << str_tools::get_name_of_service_request( service_name ) );
+		br_class->topic_out = this->create_publisher< std_msgs::msg::String >(
+			str_tools::get_name_of_service_request( service_name ),
+			QUEUE_SZ_DEFAULT
+		);
+		
+		// out service from endpoint
 		OUTLOG( "creating 'out' service " << service_name );
-		br_class->service_out = this->create_client< serviceT >( service_name );
+		br_class->service_out = this->create_service< serviceT >(
+			service_name,
+			std::bind( &bridge_service< serviceT >::service_out_callback, br_class, _1, _2 )
+		);
 	}
 	
 	// --- CUSTOM TOPICs AND SERVICEs ---
@@ -479,6 +568,7 @@ private:
 	bridge_topic<std_msgs::msg::String, ros2_bridge_support_pkg::msg::MyCustomMessage> my_custom_topic_out;
 	
 	bridge_service<ros2_bridge_support_pkg::srv::MyCustomService> my_custom_service_in;
+	bridge_service<ros2_bridge_support_pkg::srv::MyCustomService> my_custom_service_out;
 };
 
 int main( int argc, char* argv[] )

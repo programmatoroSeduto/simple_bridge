@@ -136,6 +136,7 @@ include_directories(
 # add_executable(${PROJECT_NAME}_node src/my_custom_listener_node.cpp)
 add_executable( ros1_receiver src/ros1_receiver.cpp )
 add_executable( test_client src/test_client.cpp )
+add_executable( test_service src/test_service.cpp )
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -153,6 +154,7 @@ add_executable( test_client src/test_client.cpp )
 # )
 target_link_libraries( ros1_receiver ${catkin_LIBRARIES} )
 target_link_libraries( test_client ${catkin_LIBRARIES} )
+target_link_libraries( test_service ${catkin_LIBRARIES} )
 
 #############
 ## Install ##

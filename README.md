@@ -1,4 +1,4 @@
-# Simple ROS1 BRIDGE exsample
+# Simple ROS1 BRIDGE example
 
 Here is a simple example of usage of the bridge between ROS2 and ROS1: it only makes use of standard messages, because of some limitations in the implementation of the current verison of the ROS1 bridge. 
 
