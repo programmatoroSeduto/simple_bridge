@@ -1,77 +1,44 @@
-# Simple ROS1 BRIDGE example
+# ROS1 BRIDGE SUPPORT
 
-Here is a simple example of usage of the bridge between ROS2 and ROS1: it only makes use of standard messages, because of some limitations in the implementation of the current verison of the ROS1 bridge. 
+*Francesco Ganci*, 2022
 
-## Prerequisites
+This repository contains a overlay of the ROS1 BRIDGE which can map custom messages and services between ROS1 and ROS2 using the vanilla version of the bridge. 
 
-Before testing this package, I suggest you to un-source all your distros. 
+## Prerequisites and depts
+
+Before building and running this package, I suggest you to un-source all your distros. 
 
 The code here is compatible only with **ROS1 noetic** and **ROS2 foxy**. You don't need to clone the bridge, because there's a script inside for downloading a clean version of the bridge.
 
-[Here](https://github.com/ros2/ros1_bridge.git) you can find the code of the ROS1 bridge. 
-
-## Package structure
-
-Here is the structure of the package:
-
-```
-/root/simple_bridge
-├── shell                      (build and run the project from here) 
-├── ws_bridge                  (the worksapce containing the ROS1 bridge)
-│   ├── build
-│   │   └── ...
-│   ├── install
-│   │   └── ...
-│   ├── log
-│   │   └── ...
-│   └── src
-│       └── ros1_bridge        (the ros bridge package)
-│           └── ...
-├── ws_ros1
-│   └── ...
-│   └── src
-│       └── ros1_listener_pkg  (the package containing client and subscriber for ROS1)
-│           └── src
-└── ws_ros2
-    └── ...
-    └── src
-        └── ros2_publisher_pkg  (the package containing publisher and service for ROS2)
-            └── src
-```
+[Here](https://github.com/ros2/ros1_bridge.git) you can find the official vanilla code of the ROS1 BRIDGE.
 
 ## Set up and build
 
-1. clone this repository into the */root* folder.
+1. clone this repository into the */root* folder. 
 
-2. go inside the folder */root/simple_bridge/shell* and from there run the script **shell_build.sh**. Remember to make all the files executable. The script also downloads and compiles the bridge: it requires 5min on my PC, but iit could require much time.
+```bash
+git clone https://github.com/programmatoroSeduto/simple_bridge.git /root
+```
 
-The scripts also writes some logs you can read from the folder */root/simple_bridge/logs*. 
+2. go inside the folder */root/simple_bridge/shell* and from there run the script **shell_build.sh**. Remember to make all the files executable. The script also downloads and compiles the bridge: it requires 5 minutes on my PC, but it could require much time.
 
-# How to use this project
+```
+# chmod +x /root/simple_bridge/shell/*
 
-We're goigg to open 4 shells in order to run this project. **Remember to un-source all your distros before starting.**
+# complete build process
+source /root/simple_bridge/shell/shell_build.sh
 
-## First test -- publisher in ROS2 and subscriber in ROS1
+# workspaced only
+source /root/simple_bridge/shell/shell_build_ws_only.sh
+```
 
-We're going to test the publisher subscriber using the standard message *std_msgs/msg/String*. Just follow there four steps: 
+The scripts also writes some logs you can read from the folder */root/simple_bridge/logs*. If you only need to build the workspaces without the bridge, you can use the script */root/simple_bridge/shell/shell_build_ws_only.sh*. 
 
-1. open the first shell, and launch the script */root/simple_bridge/shell/shell_roscore.sh*
-2. open the second shell, and run */root/simple_bridge/shell/shell_ros1_listener.sh*
-3. open the third shell and run */root/simple_bridge/shell/shell_ros2_publisher.sh*
-4. finally, launch the bridge using the script */root/simple_bridge/shell/shell_bridge.sh*
+# How this project works
 
-If everythig goes well, you should see that the message from the console ROS2 is sent and received by the console running the ROS1 node. 
+The principle is super easy: all the channels are transmitted between ROS1 and ROS2 *using standard strings and topics*. Informations are serialized into strings (in the code, this operation is called *cast*), then sent to the other side using strings, then it is recomposed (in the code, this operation is called *cast back*) and returned to the end-point. 
 
-## Second test -- service in ROS2 and client in ROS1
+# Limitations
 
-In this test, there's a node in ROS1 which sends true or false alternately as a request to a service running on ROS2 of the type *std_srvs/srv/SetBool*. Here are the steps to test out this functionality:
-
-1. open the first shell, and launch the script */root/simple_bridge/shell/shell_roscore.sh*
-2. open the second shell, and run */root/simple_bridge/shell/shell_ros1_client.sh*
-3. open the third shell and run */root/simple_bridge/shell/shell_ros2_service.sh*
-4. finally, launch the bridge using the script */root/simple_bridge/shell/shell_bridge.sh*
-
-# Issues and limitations
-
-- this is just a tiny test with a clean version of the ROS1 bridge; it only shows how to use it, not mentioning how to compile other custom messages and services. 
-- the script */root/simple_bridge/shell/shell_main_pub_sub.sh* doesn't work right now. 
+- the actual version has static mapping only: each time a new topic is added, the bridge support package should be rewritten and recompiled
+- string conversion of numbers with high precision could cause issues
