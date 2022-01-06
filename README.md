@@ -4,6 +4,8 @@
 
 This repository contains a overlay of the ROS1 BRIDGE which can map custom messages and services between ROS1 and ROS2 using the vanilla version of the bridge.
 
+**ATTENTION! The bridge is meant to be customized, thhen compiled**. If you try to compile it immediately after the download, the compilation will fail, because first of all you have to modify it. Please refer to the *HOW TO* section below in this readme. THe code nside this respository is just a base for building and using the ROS1 BRIDGE. 
+
 ## Prerequisites and depts
 
 Before building and running this package, I suggest you to un-source all your distros.

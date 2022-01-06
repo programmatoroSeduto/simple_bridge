@@ -1,8 +1,0 @@
-## file 'MyCustomService.srv'
-#include "ros1_bridge_support_pkg/MyCustomService.h"
-
-# the mystery word is used as prefix followed by the index number
-int32 index
-string mystery_word
----
-bool guessed  # true if the 'mystery_word' cat 'index' is correct, false otherwise

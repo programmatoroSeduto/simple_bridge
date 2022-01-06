@@ -52,7 +52,6 @@ find_package(catkin REQUIRED COMPONENTS
 #   Message1.msg
 #   Message2.msg
 # )
-add_message_files( FILES MyCustomMessage.msg )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -60,7 +59,6 @@ add_message_files( FILES MyCustomMessage.msg )
 #   Service1.srv
 #   Service2.srv
 # )
-add_service_files( FILES MyCustomService.srv )
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -74,7 +72,7 @@ add_service_files( FILES MyCustomService.srv )
 #   DEPENDENCIES
 #   std_msgs
 # )
-generate_messages( DEPENDENCIES std_msgs )
+# generate_messages( DEPENDENCIES std_msgs )
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -137,7 +135,7 @@ include_directories(
 ## With catkin_make all packages are built within a single CMake context
 ## The recommended prefix ensures that target names across packages don't collide
 # add_executable(${PROJECT_NAME}_node src/ros1_bridge_support_pkg_node.cpp)
-add_executable( ROS1_bridge_topic_receiver src/ROS1_bridge_topic_receiver.cpp )
+add_executable( ros1_bridge_support_node src/ros1_bridge_support_node.cpp )
 
 ## Rename C++ executable without prefix
 ## The above recommended prefix causes long target names, the following renames the
@@ -153,7 +151,7 @@ add_executable( ROS1_bridge_topic_receiver src/ROS1_bridge_topic_receiver.cpp )
 # target_link_libraries(${PROJECT_NAME}_node
 #   ${catkin_LIBRARIES}
 # )
-target_link_libraries( ROS1_bridge_topic_receiver ${catkin_LIBRARIES} )
+target_link_libraries( ros1_bridge_support_node ${catkin_LIBRARIES} )
 
 #############
 ## Install ##
