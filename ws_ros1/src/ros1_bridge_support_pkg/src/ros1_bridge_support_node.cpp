@@ -163,11 +163,45 @@ namespace cast_tools
 		return str;
 	}
 	
-	// put here your cast rules ...
+	// --- STUB TEMPLATE CAST RULES
+	/// @todo update also the interface for the topics, such that the body of each function is the same.
+	
+	// cast topic msg
+	template< typename c_msg_type > 
+	std::string cast_message( const typename c_msg_type::ConstPtr& msg )
+	{ return "/{//}"; }
+
+	// cast back topic msg
+	template< typename cb_msg_type > 
+	void cast_back_message( const std_msgs::String::ConstPtr& msg, cb_msg_type& msg_return )
+	{ }
+
+	// cast the service request
+	template< class c_srv_type_req >
+	std::string cast_service_request( typename c_srv_type_req::Request* req )
+	{ return "/{//}"; }
+
+	// cast back the service request
+	template< typename cb_srv_type_req >
+	void cast_back_service_request( std::string msg, typename cb_srv_type_req::Request* req )
+	{ }
+
+	// cast the service response
+	template< typename c_srv_type_res >
+	std::string cast_service_response( typename c_srv_type_res::Response* res )
+	{ return "/{//}"; }
+
+	// cast back the service response
+	template< typename cb_srv_type_res >
+	void cast_back_service_response( std::string msg, typename cb_srv_type_res::Response* res )
+	{ }
+	
+	// write here your cast rules ...
 	// ...
 }
 
 /// representation of a generic topic
+/// @todo update the way the topic is managed (for symmetry with ROS2)
 template<typename Topic_type>
 class bridge_topic
 {
@@ -178,11 +212,11 @@ public:
 	ros::Subscriber sub;
 	
 	// "OUT BRIDGE" : from ROS1 to ROS2 (cast)
-	void bridge_cbk_out( const ros1_bridge_support_pkg::MyCustomMessage::ConstPtr& msg )
+	void bridge_cbk_out( const typename Topic_type::ConstPtr& msg )
 	{
 		// cast-back the message
 		std_msgs::String rmsg;
-		rmsg.data = cast_tools::cast_message( msg );
+		rmsg.data = cast_tools::cast_message< Topic_type >( msg );
 		
 		// publish the message
 		this->pub.publish( rmsg );
@@ -192,7 +226,8 @@ public:
 	void bridge_cbk_in( const std_msgs::String::ConstPtr& msg )
 	{
 		// cast-back the message
-		Topic_type rmsg = cast_tools::cast_back_message( msg );
+		Topic_type rmsg;
+		cast_tools::cast_back_message< Topic_type >( msg, rmsg );
 		
 		// publish the message
 		this->pub.publish( rmsg );
@@ -219,7 +254,7 @@ public:
 	bool service_out_callback(
 		typename serviceT::Request &req,
 		typename serviceT::Response &res
-		)
+	)
 	{
 		OUTLOG( "ROS1 BRIDGE REQUEST" );
 		
@@ -229,7 +264,7 @@ public:
 		
 		// cast the request to string
 		std_msgs::String req_str;
-		req_str.data = cast_tools::cast_service_request( req );
+		req_str.data = cast_tools::cast_service_request< serviceT >( &req );
 		
 		// send the request to ROS2 through topic_out 
 		topic_out.publish( req_str );
@@ -249,7 +284,7 @@ public:
 		OUTLOG( "got a response from ROS2 -> [" << response_string << "]" );
 		
 		// cast back the message to response and write it (use a specific cast-back method)
-		res = cast_tools::cast_back_service_response( response_string );
+		cast_tools::cast_back_service_response( response_string, &res );
 		
 		return true;
 	}
@@ -261,8 +296,8 @@ public:
 		OUTLOG( "with data: [" << msg->data << "]" );
 		
 		// cast back the message
-		ros1_bridge_support_pkg::MyCustomService srv;
-		srv.request = cast_tools::cast_back_service_request( msg->data );
+		serviceT srv;
+		cast_tools::cast_back_service_request( msg->data, &srv.request );
 		
 		// call the service and get the response
 		OUTLOG( "waiting for a response from the service..." );
@@ -270,7 +305,7 @@ public:
 		
 		// cast the message
 		std_msgs::String res_str;
-		res_str.data = cast_tools::cast_service_response( srv.response );
+		res_str.data = cast_tools::cast_service_response( &srv.response );
 		
 		// and publish it
 		OUTLOG( "returning response: [" << res_str.data << "]" );
@@ -423,7 +458,7 @@ private:
 		
 		// out service to endpoint
 		OUTLOG( "creating 'in' service " << service_name );
-		br_class->service_in = nh.serviceClient<ros1_bridge_support_pkg::MyCustomService>(
+		br_class->service_in = nh.serviceClient< serviceT >(
 			service_name
 		);
 	}

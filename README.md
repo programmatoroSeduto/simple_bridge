@@ -160,86 +160,35 @@ Feel free to reuse the interface I provide in the following sections.
 for topics:
 
 ```cpp
-// your message type is pkg::Msg
+/// @todo update also the interface for the topics, such that the body of each function is the same.
+	
+// cast topic msg
+template< typename c_msg_type > 
+std::string cast_message( const typename c_msg_type::ConstPtr& msg )
 
-// cast the message 'pkg::Msg'
-std::string cast_message( const pkg::Msg::ConstPtr& msg )
-{
-	std::string str = "";
-	
-	// str += SSS( msg->value ) + " ";
-	// ...
-	
-	return str;
-}
-
-// cast-back the message 'pkg::Msg'
-pkg::Msg cast_back_message( const std_msgs::String::ConstPtr& msg )
-{
-	// split the message
-	std::vector<std::string> content = str_tools::pack_split( msg->data, ' ' );
-	
-	// cast field by field
-	pkg::Msg rmsg;
-	
-	// rmsg.value = content[3];
-	// ...
-	
-	return rmsg;
-}
+// cast back topic msg
+template< typename cb_msg_type > 
+void cast_back_message( const std_msgs::String::ConstPtr& msg, cb_msg_type& msg_return )
 ```
 
 for services:
 
 ```cpp
-// yout service type is pkg::Srv
+// cast the service request
+template< class c_srv_type_req >
+std::string cast_service_request( typename c_srv_type_req::Request* req )
 
-// cast the service request 'pkg::Srv'
-std::string cast_service_request( pkg::Srv::Request &req )
-{
-	std::string str = "";
-	
-	// str += SSS( req.index ) + " ";
-	// ...
-	
-	return str;
-}
+// cast back the service request
+template< typename cb_srv_type_req >
+void cast_back_service_request( std::string msg, typename cb_srv_type_req::Request* req )
 
-// cast back the service request of 'pkg::Srv'
-pkg::Srv::Request cast_back_service_request( std::string msg )
-{
-	std::vector< std::string > content = str_tools::pack_split( msg, ' ' );
-	
-	pkg::Srv::Request req;
-	
-	// req.value = atoi( content[0].c_str( ) );
-	// ...
-	
-	return req;
-}
+// cast the service response
+template< typename c_srv_type_res >
+std::string cast_service_response( typename c_srv_type_res::Response* res )
 
-// cast the service response 'pkg::Srv'
-std::string cast_service_response( pkg::Srv::Response &res )
-{
-	std::string str = "";
-	
-	// str += SSS( res.index ) + " ";
-	// ...
-	
-	return str;
-}
-
-// cast back the service response 'pkg::Srv'
-pkg::Srv::Response cast_back_service_response( std::string msg )
-{
-	std::vector< std::string > content = str_tools::pack_split( msg, ' ' );
-	
-	pkg::Srv::Response res;
-	// res.field = content[0];
-	// ...
-	
-	return res;
-}
+// cast back the service response
+template< typename cb_srv_type_res >
+void cast_back_service_response( std::string msg, typename cb_srv_type_res::Response* res )
 ```
 
 ### cast rules in ROS2
