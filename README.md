@@ -247,86 +247,33 @@ pkg::Srv::Response cast_back_service_response( std::string msg )
 for topics:
 
 ```cpp
-// your message type is pkg::msg::Msg
+// cast topic msg
+template< typename c_msg_type > 
+std::string cast_message( const typename c_msg_type::SharedPtr msg )
 
-// cast the message pkg::msg::Msg to string
-std::string cast_message( const pkg::msg::Msg::SharedPtr msg )
-{
-	std::string str = "";
-	
-	// str += SSS( msg->value ) + " ";
-	// ...
-	
-	return str;
-}
-
-// cast back the message pkg::msg::Msg
-pkg::msg::Msg cast_back_message( const std_msgs::msg::String::SharedPtr msg )
-{
-	// split the message
-	std::vector< std::string > content = str_tools::pack_split( msg->data, ' ' );
-	
-	// cast field by field
-	pkg::msg::Msg rmsg;
-	// rmsg.value = atoi( content[1].c_str( ) );
-	// ...
-	
-	return rmsg;
-}
+// cast back topic msg
+template< typename cb_msg_type > 
+void cast_back_message( const std_msgs::msg::String::SharedPtr msg, cb_msg_type& msg_return )
 ```
 
 for services:
 
 ```cpp
-// yout service type is pkg::srv::Srv
+// cast the service request
+template< class c_srv_type_req >
+std::string cast_service_request( const std::shared_ptr<typename c_srv_type_req::Request> req )
 
-// cast the service request pkg::srv::Srv
-std::string cast_service_request( const std::shared_ptr<pkg::srv::Srv::Request> req )
-{
-	std::string str = "";
-	
-	// str += SSS( req->index ) + " ";
-	// ...
-	
-	return str;
-}
+// cast back the service request
+template< typename cb_srv_type_req >
+void cast_back_service_request( std::string &msg, std::shared_ptr< typename cb_srv_type_req::Request >& req )
 
-// cast back the service request of pkg::srv::Srv
-pkg::srv::Srv::Request cast_back_service_request( std::string &msg )
-{
-	std::vector< std::string > content = str_tools::pack_split( msg, ' ' );
-	
-	pkg::srv::Srv::Request req;
-	
-	// req.index = atoi( content[0].c_str( ) );
-	// ...
-	
-	return req;
-}
+// cast the service response
+template< typename c_srv_type_res >
+std::string cast_service_response( const std::shared_ptr<typename c_srv_type_res::Response> res )
 
-// cast the service response of pkg::srv::Srv
-std::string cast_service_response( const std::shared_ptr<pkg::srv::Srv::Response> res )
-{
-	std::string str = "";
-	
-	// str += SSS( res->index ) + " ";
-	// ...
-	
-	return str;
-}
-
-// cast back the service response pkg::srv::Srv
-pkg::srv::Srv::Response cast_back_service_response( std::string &msg )
-{
-	std::vector< std::string > content = str_tools::pack_split( msg, ' ' );
-	
-	pkg::srv::Srv::Response res;
-	
-	// res.guessed = cast_back_field( content[0] );
-	// ...
-	
-	return res;
-}
+// cast back the service response
+template< typename cb_srv_type_res >
+void cast_back_service_response( std::string &msg, std::shared_ptr< typename cb_srv_type_res::Response >& res )
 ```
 
 ## Bridge Topic Class

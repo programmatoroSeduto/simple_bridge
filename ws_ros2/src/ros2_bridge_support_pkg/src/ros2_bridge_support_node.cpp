@@ -162,7 +162,38 @@ namespace cast_tools
 		return str;
 	}
 	
-	// put here your custom cast rules ...
+	// --- STUB TEMPLATE CAST RULES
+	// cast topic msg
+	template< typename c_msg_type > 
+	std::string cast_message( const typename c_msg_type::SharedPtr msg )
+	{ return "/{//}"; }
+
+	// cast back topic msg
+	template< typename cb_msg_type > 
+	void cast_back_message( const std_msgs::msg::String::SharedPtr msg, cb_msg_type& msg_return )
+	{ msg = msg; msg_return = msg_return; }
+
+	// cast the service request
+	template< class c_srv_type_req >
+	std::string cast_service_request( const std::shared_ptr<typename c_srv_type_req::Request> req )
+	{ return "/{//}"; }
+
+	// cast back the service request
+	template< typename cb_srv_type_req >
+	void cast_back_service_request( std::string &msg, std::shared_ptr< typename cb_srv_type_req::Request >& req )
+	{ msg = msg; req = req; }
+
+	// cast the service response
+	template< typename c_srv_type_res >
+	std::string cast_service_response( const std::shared_ptr<typename c_srv_type_res::Response> res )
+	{ return "/{//}"; }
+
+	// cast back the service response
+	template< typename cb_srv_type_res >
+	void cast_back_service_response( std::string &msg, std::shared_ptr< typename cb_srv_type_res::Response >& res )
+	{ msg = msg; res = res; }
+	
+	// put here your cast rules
 	// ...
 }
 
@@ -181,7 +212,7 @@ public:
 	{
 		// cast the message to string
 		std_msgs::msg::String bridge_data;
-		bridge_data.data = cast_tools::cast_message( msg );
+		bridge_data.data = cast_tools::cast_message< topicT_sub >( msg );
 		
 		// publish the message
 		this->pub->publish( bridge_data );
@@ -191,7 +222,8 @@ public:
 	void bridge_cbk_in( const std_msgs::msg::String::SharedPtr msg ) const
 	{
 		// cast back the message from string to message
-		topicT_pub bridge_data = cast_tools::cast_back_message( msg );
+		topicT_pub bridge_data;
+		cast_tools::cast_back_message< topicT_pub >( msg, bridge_data );
 		
 		// publish the message
 		this->pub->publish( bridge_data );
@@ -233,7 +265,7 @@ public:
 		
 		// cast the request to string
 		std_msgs::msg::String req_str;
-		req_str.data = cast_tools::cast_service_request( req );
+		req_str.data = cast_tools::cast_service_request< serviceT >( req );
 		
 		// send the request to ROS1 through topic_out 
 		this->topic_out->publish( req_str );
@@ -248,7 +280,7 @@ public:
 		OUTLOG( "got a response from ROS1 -> [" << response_string << "]" );
 		
 		// cast back the message and write it
-		*res = cast_tools::cast_back_service_response( response_string );
+		cast_tools::cast_back_service_response< serviceT >( response_string, res );
 	}
 	
 	/// subscriber which calls the endpoint
@@ -260,19 +292,19 @@ public:
 		OUTLOG( "with data: [" << msg->data << "]" );
 		
 		// cast back of the request
-		auto req = std::make_shared<ros2_bridge_support_pkg::srv::MyCustomService::Request>( );
-		*req = cast_tools::cast_back_service_request( msg-> data );
+		auto req = std::make_shared< typename serviceT::Request >( );
+		cast_tools::cast_back_service_request< serviceT >( msg-> data, req );
 		
 		// call the endpoint and get the result
 		OUTLOG( "waiting for a response from the service..." );
-		auto res_future = (service_in->async_send_request( req ));
+		auto res_future = service_in->async_send_request( req );
 		// synchronous request
 		res_future.wait( );
 		auto res = res_future.get( );
 		
 		// cast the response from the endpoint
 		std_msgs::msg::String res_str;
-		res_str.data = cast_tools::cast_service_response( res );
+		res_str.data = cast_tools::cast_service_response< serviceT >( res );
 		
 		// publish the response
 		OUTLOG( "returning response: [" << res_str.data << "]" );
@@ -280,8 +312,7 @@ public:
 	}
 	
 	/// callback service subscriber
-	void topic_in_callback(
-		const std_msgs::msg::String::SharedPtr msg )
+	void topic_in_callback( const std_msgs::msg::String::SharedPtr msg )
 	{
 		if( waiting_response )
 		{
