@@ -53,6 +53,7 @@ Before putting your hands on the code of the bridge support, you should take int
 - **out-topic** : the end point is a publisher to a node beyond the bridge
 - **out-service** : the client runs in “this” framework. For example, if you’re working in ROS1, a service from ROS1 and ROS2 is a *out-service*. The ‘out’ service sends the request and waits for an answer from the other side.
 - **in-service** : the client runs in the other framework. the in-service listens for a request and, when it arrives, calls the service and returns the response.
+- **this framework** : the middleware from where the ROS bridge support is executed
 
 # Structure of the code
 
