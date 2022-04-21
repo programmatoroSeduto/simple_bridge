@@ -177,64 +177,6 @@ atoi( content[1].c_str( ) )
 atof( content[2].c_str( ) )
 ```
 
-Feel free to reuse the interface in the following sections. Remember to define them within the namespace `cast_tools`. 
-
-### cast rules in ROS1
-
-for topics: (replace `???` in the code with the definition of the message like `package::message`)
-
-```cpp
-// cast topic msg
-std::string cast_message( const ???::ConstPtr& msg );
-
-// cast back topic msg
-void cast_back_message( const std_msgs::String::ConstPtr& msg, ???& msg_return );
-```
-
-for services: (replace `???` in the code with the definition of the service like `package::service`)
-
-```cpp
-// cast the service request
-std::string cast_service_request( ???::Request* req );
-
-// cast back the service request
-void cast_back_service_request( std::string msg, ???::Request *req );
-
-// cast the service response
-std::string cast_service_response( ???::Response *res );
-
-// cast back the service response
-void cast_back_service_response( std::string msg, ???::Response *res );
-```
-
-### cast rules in ROS2
-
-for topics: (replace `???` in the code with the definition of the message like `package::srv::message`)
-
-```cpp
-// cast topic msg
-std::string cast_message( const ???::SharedPtr msg );
-
-// cast back topic msg
-void cast_back_message( const std_msgs::msg::String::SharedPtr msg, ???& msg_return );
-```
-
-for services: (replace `???` in the code with the definition of the service like `package::srv::service`)
-
-```cpp
-// cast the service request
-std::string cast_service_request( const std::shared_ptr<???::Request> req );
-
-// cast back the service request
-void cast_back_service_request( std::string &msg, std::shared_ptr<???::Request>& req );
-
-// cast the service response
-std::string cast_service_response( const std::shared_ptr<???::Response> res );
-
-// cast back the service response
-void cast_back_service_response( std::string &msg, std::shared_ptr<???::Response>& res );
-```
-
 ## The class *bridge_topic*
 
 Each topic is represented as an instance of a class called `bridge_topic`. The two versions of the classes are slightly different in ROS1 and in ROS2, but with the same the overall structure:
@@ -285,6 +227,74 @@ void make_link_service_out( bridge_service< serviceT >* br_class, std::string se
 // create a in service, from the other framework to this one
 template< typename serviceT >
 void make_link_service_in( bridge_service< serviceT >* br_class, std::string service_name );
+```
+
+# Formats for the Cast Rules
+
+Feel free to reuse the interface in the following sections. Remember to define them within the namespace `cast_tools`. 
+
+## Cast rules in ROS1
+
+### Topics
+
+for topics: (replace `???` in the code with the definition of the message like `package::message`)
+
+```cpp
+// cast topic msg
+std::string cast_message( const ???::ConstPtr& msg );
+
+// cast back topic msg
+void cast_back_message( const std_msgs::String::ConstPtr& msg, ???& msg_return );
+```
+
+### Services
+
+for services: (replace `???` in the code with the definition of the service like `package::service`)
+
+```cpp
+// cast the service request
+std::string cast_service_request( ???::Request* req );
+
+// cast back the service request
+void cast_back_service_request( std::string msg, ???::Request *req );
+
+// cast the service response
+std::string cast_service_response( ???::Response *res );
+
+// cast back the service response
+void cast_back_service_response( std::string msg, ???::Response *res );
+```
+
+## Cast rules in ROS2
+
+### Topics
+
+for topics: (replace `???` in the code with the definition of the message like `package::srv::message`)
+
+```cpp
+// cast topic msg
+std::string cast_message( const ???::SharedPtr msg );
+
+// cast back topic msg
+void cast_back_message( const std_msgs::msg::String::SharedPtr msg, ???& msg_return );
+```
+
+### Services
+
+for services: (replace `???` in the code with the definition of the service like `package::srv::service`)
+
+```cpp
+// cast the service request
+std::string cast_service_request( const std::shared_ptr<???::Request> req );
+
+// cast back the service request
+void cast_back_service_request( std::string &msg, std::shared_ptr<???::Request>& req );
+
+// cast the service response
+std::string cast_service_response( const std::shared_ptr<???::Response> res );
+
+// cast back the service response
+void cast_back_service_response( std::string &msg, std::shared_ptr<???::Response>& res );
 ```
 
 # HOWTOs
